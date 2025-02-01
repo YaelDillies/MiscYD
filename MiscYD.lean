@@ -4,6 +4,7 @@ import MiscYD.AddCombi.Kneser.CauchyDavenportFromKneser
 import MiscYD.AddCombi.Kneser.Kneser
 import MiscYD.AddCombi.Kneser.KneserRuzsa
 import MiscYD.AddCombi.Kneser.MulStab
+import MiscYD.AddCombi.Kneser.OldKneser
 import MiscYD.AddCombi.SliceRank
 import MiscYD.Book.MetricBetween
 import MiscYD.Book.SylvesterChvatal
@@ -11,6 +12,7 @@ import MiscYD.Convexity.MinkowskiCaratheodory
 import MiscYD.Convexity.Refactor.Defs
 import MiscYD.Convexity.Refactor.StdSimplex
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
+import MiscYD.Mathlib.Data.Set.Pointwise.SMul
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import MiscYD.Mathlib.Order.Flag
