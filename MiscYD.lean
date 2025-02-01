@@ -7,11 +7,14 @@ import MiscYD.AddCombi.Kneser.MulStab
 import MiscYD.AddCombi.SliceRank
 import MiscYD.Book.MetricBetween
 import MiscYD.Book.SylvesterChvatal
+import MiscYD.Convexity.Ceva
 import MiscYD.Convexity.MinkowskiCaratheodory
 import MiscYD.Convexity.Refactor.Defs
 import MiscYD.Convexity.Refactor.StdSimplex
+import MiscYD.Mathlib.Analysis.Convex.Combination
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
+import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
 import MiscYD.Mathlib.Order.Flag
 import MiscYD.Mathlib.Order.RelIso.Group
