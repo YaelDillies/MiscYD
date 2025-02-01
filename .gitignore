@@ -1,0 +1,14 @@
+
+*.olean
+/_target
+/.lake
+/doc-gen
+/build
+/lake-packages
+/leanpkg.path
+
+decls.pickle
+decls.yaml
+src/all.lean
+src/list_decls.lean
+src/.noisy_files
