@@ -36,6 +36,10 @@ jobs:
       - name: Copy README.md to website/index.md
         run: cp README.md website/index.md
 
+      - name: Check MiscYD.Mathlib only imports from Mathlib or MiscYD.Mathlib
+        run: |
+          python3 scripts/check_mathlib_imports.py
+
       - name: Upstreaming dashboard
         run: |
           mkdir -p website/_includes
@@ -56,19 +60,15 @@ jobs:
           sudo apt install graphviz -y
           ~/.elan/bin/lake exe graph website/file_deps.pdf
 
-      - name: Cache dependencies docs
-        uses: actions/cache@v3
+      - name: Cache documentation
+        uses: actions/cache@v4
         with:
-          path: docbuild/.lake/build/doc
+          path: website/docs
           key: MathlibDoc-${{ hashFiles('lake-manifest.json') }}
-          restore-keys: |
-            MathlibDoc-
+          restore-keys: MathlibDoc-
 
       - name: Build documentation
-        working-directory: docbuild
-        run: |
-          ~/.elan/bin/lake exe cache get || true
-          ~/.elan/bin/lake build MiscYD:docs
+        run: scripts/build_docs.sh
 
       # - name: Build blueprint and copy to `website/blueprint`
       #   uses: xu-cheng/texlive-action@v2
@@ -87,7 +87,8 @@ jobs:
 
       - name: Copy documentation to `website/docs`
         run: |
-          mv docbuild/.lake/build/doc website/docs
+          mkdir -p website/docs
+          mv docs/build website/docs
 
       - name: Bundle dependencies
         uses: ruby/setup-ruby@v1
@@ -111,4 +112,5 @@ jobs:
 
       - name: Make sure the cache works
         run: |
+          mkdir -p docbuild/.lake/build/doc
           mv website/docs docbuild/.lake/build/doc
