@@ -7,6 +7,7 @@ import Mathlib.Analysis.Normed.Lp.WithLp
 import Mathlib.Data.Complex.Exponential
 import Mathlib.Probability.CondVar
 import Mathlib.Topology.MetricSpace.MetricSeparated
+import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
 import MiscYD.PhD.VCDim.HypercubeEdges
 
 /-!
@@ -23,14 +24,18 @@ has small conditional variance conditioned on finitely many other marginals.
 -/
 
 open Fintype MeasureTheory Metric ProbabilityTheory Real
-open scoped Finset NNReal
+open scoped BigOperators Finset NNReal
 
-variable {Ω X : Type*} [MeasurableSpace Ω] {μ : Measure Ω} {A : Ω → Set X} {𝓕 : Finset (Set X)}
-  {I : Set X} {x : X} {d : ℕ}
+variable {Ω X : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
+  [DecidableEq X] {A : Ω → Set X} {𝓕 : Finset (Set X)} {I : Finset X} {x : X} {d : ℕ}
 
-/-- If `A` is a random variable valued in a small VC dimension set family over a fintype `X`,
-`I ⊆ X` is finite and `x ∈ I`, then `x ∈ A`has small conditional variance conditioned on `y ∈ A`
-for each `y ∈ I \ {x}`. -/
-theorem small_condVar_of_isNIPWith (isNIPWith_𝓕 : IsNIPWith d 𝓕.toSet) (hA : ∀ᵐ ω ∂μ, A ω ∈ 𝓕) :
-    Var[fun ω ↦ (A ω).indicator 1 x ; μ | .generateFrom sorry] ≤ sorry :=
-  sorry
+-- /-- If `A` is a random variable valued in a small VC dimension set family over a fintype `X`,
+-- `I ⊆ X` is finite and `x ∈ I`, then `x ∈ A`has small conditional variance conditioned on `y ∈ A`
+-- for each `y ∈ I \ {x}`. -/
+-- theorem small_condVar_of_isNIPWith (isNIPWith_𝓕 : IsNIPWith d 𝓕.toSet) (hA : ∀ᵐ ω ∂μ, A ω ∈ 𝓕) :
+--     ∑ x ∈ I, (μ[Var[fun ω ↦ (A ω).indicator 1 x ; μ | σ(fun y : ↑(I \ {x}) ↦ y.1 ∈ A ω)]] : ℝ)
+--       ≤ d :=
+--   calc
+--     _ = _ :=
+--     _ ≤ μ[d] := _
+--     _ = d := sorry
