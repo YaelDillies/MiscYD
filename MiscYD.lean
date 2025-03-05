@@ -19,6 +19,7 @@ import MiscYD.Mathlib.Data.ENNReal.Order
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+import MiscYD.Mathlib.MeasureTheory.Function.ConditionalExpectation.Basic
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
 import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
