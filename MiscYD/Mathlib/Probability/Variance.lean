@@ -74,15 +74,15 @@ lemma variance_of_ae_eq_zero_or_one (hXmeas : AEStronglyMeasurable X μ)
       rw [sq, ← one_sub_mul, integral_of_ae_eq_zero_or_one hXmeas.aestronglyMeasurable hX]
       congr
       rw [← ENNReal.toReal_one, ← ENNReal.toReal_sub, ← prob_compl_eq_one_sub]
-      congr 1
-      refine measure_congr ?_
-      filter_upwards [hX]
-      -- FIXME: The following change is due to the measure theory library defeq abusing
-      -- `Set Ω = (Ω → Prop)`
-      change ∀ ω _, (_ ≠ _) = (_ = _)
-      rintro ω (hω | hω) <;> simp [hω]
-      exact (hXmeas.measurable <| .singleton _)
-      exact prob_le_one
-      simp
+      · congr 1
+        refine measure_congr ?_
+        filter_upwards [hX]
+        -- FIXME: The following change is due to the measure theory library defeq abusing
+        -- `Set Ω = (Ω → Prop)`
+        change ∀ ω _, (_ ≠ _) = (_ = _)
+        rintro ω (hω | hω) <;> simp [hω]
+      · exact (hXmeas.measurable <| .singleton _)
+      · exact prob_le_one
+      · simp
 
 end ProbabilityTheory

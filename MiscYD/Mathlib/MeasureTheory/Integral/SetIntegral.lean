@@ -63,10 +63,10 @@ lemma one_sub_integral_of_ae_eq_zero_or_one [IsProbabilityMeasure μ]
   calc
     _ = μ[1 - X] := by
       rw [integral_sub' _ <| .of_bound 1 hXmeas ?_]
-      simp
-      exact integrable_const _
-      filter_upwards [hX]
-      rintro ω (hω | hω) <;> simp [hω]
+      · simp
+      · exact integrable_const _
+      · filter_upwards [hX]
+        rintro ω (hω | hω) <;> simp [hω]
     _ = (μ {ω | 1 - X ω = 1}).toReal :=
       integral_of_ae_eq_zero_or_one (aestronglyMeasurable_const (b := 1).sub hXmeas)
         (by simpa [sub_eq_zero, or_comm, eq_comm (a := (1 : ℝ))] using hX)

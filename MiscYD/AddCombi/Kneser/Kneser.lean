@@ -95,7 +95,7 @@ lemma mulStab_union (hs₁ : (s ∩ a • C.mulStab).Nonempty) (ht₁ : (t ∩ b
     ((subset_inter (mulStab_mul_ssubset_mulStab hs₁ ht₁ hab).subset Subset.rfl).trans
           inter_mulStab_subset_mulStab_union).antisymm'
       fun x hx => ?_
-  replace hx := (mem_mulStab $ (hs₁.mul ht₁).mono subset_union_right).mp hx
+  replace hx := (mem_mulStab <| (hs₁.mul ht₁).mono subset_union_right).mp hx
   rw [smul_finset_union] at hx
   suffices hxC : x ∈ C.mulStab by
     rw [(mem_mulStab hCne).mp hxC] at hx
@@ -119,9 +119,9 @@ lemma mulStab_union (hs₁ : (s ∩ a • C.mulStab).Nonempty) (ht₁ : (t ∩ b
     convert disjoint_smul_finset_mulStab_mul_mulStab fun hxyC => _
     · exact C.mul_mulStab.symm
     rw [mul_mulStab] at hxyC
-    exact hyne.not_disjoint (hC.mono_left $ le_iff_subset.2 hxyC)
+    exact hyne.not_disjoint (hC.mono_left <| le_iff_subset.2 hxyC)
   have hxysub : (x * y) • C.mulStab ⊆ s ∩ a • C.mulStab * (t ∩ b • C.mulStab) :=
-    hxyC.left_le_of_le_sup_left (hxyCsubC.trans $ subset_union_left.trans hx.subset')
+    hxyC.left_le_of_le_sup_left (hxyCsubC.trans <| subset_union_left.trans hx.subset')
   suffices s ∩ a • C.mulStab * (t ∩ b • C.mulStab) ⊂ (a * b) • C.mulStab by
     have := (card_le_card hxysub).not_lt ((card_lt_card this).trans_eq ?_)
     cases this
@@ -233,7 +233,7 @@ lemma inter_mul_sub_card_le {a : α} {s t C : Finset α} (has : a ∈ s)
               (s ∩ a • C.mulStab * (t ∩ a • C.mulStab)).mulStab)) := by
       rw [card_sdiff, Int.ofNat_sub (card_le_card _), card_smul_finset]
       · rw [union_mul, le_sub_iff_add_le]
-        refine le_trans (add_le_add_left (Int.ofNat_le.mpr $ card_union_le _ _) _) ?_
+        refine le_trans (add_le_add_left (Int.ofNat_le.mpr <| card_union_le _ _) _) ?_
         norm_num
       all_goals
         apply subset_trans (mul_subset_mul_left hst)
@@ -270,7 +270,7 @@ private lemma card_mul_add_card_lt (hC : C.Nonempty) (hs : s' ⊆ s) (ht : t' �
   add_lt_add_of_lt_of_le
       (by
         rw [← tsub_pos_iff_lt, ← card_sdiff (mul_subset_mul hs ht), card_pos]
-        exact hC.mono (subset_sdiff.2 ⟨hCst, hCst'⟩)) $
+        exact hC.mono (subset_sdiff.2 ⟨hCst, hCst'⟩)) <|
     card_le_card hs
 
 /-! ### Kneser's theorem -/
@@ -321,7 +321,7 @@ theorem mul_kneser :
     rw [← image_coe_mul, card_mul_card_eq_mulStab_card_mul_coe]
     exact
       add_lt_add_of_lt_of_le
-        (lt_mul_left ((hs.mul ht).image _).card_pos $
+        (lt_mul_left ((hs.mul ht).image _).card_pos <|
           Finset.one_lt_card.2 ((hs.mul ht).mulStab_nontrivial.2 hstab))
         card_image_le
   -- Simplify the induction hypothesis a bit. We will only need it over `α` from now on.
@@ -348,20 +348,20 @@ theorem mul_kneser :
   simp only [mul_smul_comm, smul_mul_assoc, mulStab_smul, card_smul_finset] at *
   have hst : (s ∩ t).Nonempty := ⟨_, mem_inter.2 ⟨ha, hc⟩⟩
   have hsts : s ∩ t ⊂ s :=
-    ⟨inter_subset_left, not_subset.2 ⟨_, hb, fun h => hbac $ inter_subset_right h⟩⟩
+    ⟨inter_subset_left, not_subset.2 ⟨_, hb, fun h => hbac <| inter_subset_right h⟩⟩
   clear! a b
   set convergent : Set (Finset α) :=
     {C | C ⊆ s * t ∧ #(s ∩ t) + #((s ∪ t) * C.mulStab) ≤ #C + #C.mulStab}
   have convergent_nonempty : convergent.Nonempty := by
-    refine ⟨s ∩ t * (s ∪ t), inter_mul_union_subset, (add_le_add_right (card_le_card $
-      subset_mul_left _ $ one_mem_mulStab.2 $ hst.mul $ hs.mono subset_union_left) _).trans $
+    refine ⟨s ∩ t * (s ∪ t), inter_mul_union_subset, (add_le_add_right (card_le_card <|
+      subset_mul_left _ <| one_mem_mulStab.2 <| hst.mul <| hs.mono subset_union_left) _).trans <|
         ih (s ∩ t) (s ∪ t) ?_⟩
     exact add_lt_add_of_le_of_lt (card_le_card inter_mul_union_subset) (card_lt_card hsts)
   let C := argminOn (fun C : Finset α => #C.mulStab) _ convergent_nonempty
   set H := C.mulStab with hH
   obtain ⟨hCst, hCcard⟩ : C ∈ convergent := argminOn_mem _ _ _
   have hCmin (D : Finset α) (hDH : D.mulStab ⊂ H) : D ∉ convergent := fun hD ↦
-    (card_lt_card hDH).not_le $ argminOn_le (fun D : Finset α => #D.mulStab) _ hD
+    (card_lt_card hDH).not_le <| argminOn_le (fun D : Finset α => #D.mulStab) _ hD
   clear_value C
   clear convergent_nonempty
   obtain rfl | hC := C.eq_empty_or_nonempty
@@ -459,31 +459,31 @@ theorem mul_kneser :
     norm_cast
     conv_lhs => rw [← card_union_of_disjoint hST, ← card_union_of_disjoint hSTst, ← mul_one (s ∪ t)]
     refine card_le_card
-      (union_subset (union_subset ?_ ?_) $ mul_subset_mul_left $ one_subset.2 hC.one_mem_mulStab)
-    · exact hSst.trans (sdiff_subset.trans $ smul_finset_subset_smul $ mem_union_left _ ha)
-    · exact hTst.trans (sdiff_subset.trans $ smul_finset_subset_smul $ mem_union_right _ hb)
+      (union_subset (union_subset ?_ ?_) <| mul_subset_mul_left <| one_subset.2 hC.one_mem_mulStab)
+    · exact hSst.trans (sdiff_subset.trans <| smul_finset_subset_smul <| mem_union_left _ ha)
+    · exact hTst.trans (sdiff_subset.trans <| smul_finset_subset_smul <| mem_union_right _ hb)
   have hH₁ne : H₁.Nonempty := (hs₁ne.mul ht₁ne).mulStab
   have hH₂ne : H₂.Nonempty := (hs₂ne.mul ht₂ne).mulStab
   -- Now we prove inequality (2)
   have aux2₁ : (#s₁ : ℤ) + #t₁ + #H₁ ≤ #H := by
     rw [← le_sub_iff_add_le']
-    refine (Int.le_of_dvd ((sub_nonneg_of_le $ Nat.cast_le.2 $ card_le_card $
-      mul_subset_mul_left hH₁H.subset).trans_lt aux1₁) $ dvd_sub
+    refine (Int.le_of_dvd ((sub_nonneg_of_le <| Nat.cast_le.2 <| card_le_card <|
+      mul_subset_mul_left hH₁H.subset).trans_lt aux1₁) <| dvd_sub
         (dvd_sub (card_mulStab_dvd_card_mulStab (hs₁ne.mul ht₁ne) hH₁H.subset).natCast
-          (card_mulStab_dvd_card_mul_mulStab _ _).natCast) $
+          (card_mulStab_dvd_card_mul_mulStab _ _).natCast) <|
         (card_mulStab_dvd_card_mul_mulStab _ _).natCast).trans ?_
     rw [sub_sub]
     gcongr _ - (Nat.cast ?_ + Nat.cast ?_) <;> exact card_le_card_mul_right hH₁ne
   have aux2₂ : (#s₂ : ℤ) + #t₂ + #H₂ ≤ #H := by
     rw [← le_sub_iff_add_le']
-    refine (Int.le_of_dvd ((sub_nonneg_of_le $ Nat.cast_le.2 $ card_le_card $
-      mul_subset_mul_left hH₂H.subset).trans_lt aux1₂) $ dvd_sub
+    refine (Int.le_of_dvd ((sub_nonneg_of_le <| Nat.cast_le.2 <| card_le_card <|
+      mul_subset_mul_left hH₂H.subset).trans_lt aux1₂) <| dvd_sub
         (dvd_sub (card_mulStab_dvd_card_mulStab (hs₂ne.mul ht₂ne) hH₂H.subset).natCast
-          (card_mulStab_dvd_card_mul_mulStab _ _).natCast) $
+          (card_mulStab_dvd_card_mul_mulStab _ _).natCast) <|
         (card_mulStab_dvd_card_mul_mulStab _ _).natCast).trans ?_
     rw [sub_sub]
-    exact sub_le_sub_left (add_le_add (Nat.cast_le.2 $ card_le_card_mul_right hH₂ne) $
-      Nat.cast_le.2 $ card_le_card_mul_right hH₂ne) _
+    exact sub_le_sub_left (add_le_add (Nat.cast_le.2 <| card_le_card_mul_right hH₂ne) <|
+      Nat.cast_le.2 <| card_le_card_mul_right hH₂ne) _
   -- Now we deduce inequality (3) using the above lemma in addition to the facts that `s * t` is not
   -- convergent and then induction hypothesis applied to `sᵢ` and `tᵢ`
   have aux3₁ : (#S : ℤ) + #T + #s₁ + #t₁ - #H₁ < #H :=
@@ -491,7 +491,7 @@ theorem mul_kneser :
       (#S : ℤ) + #T + #s₁ + #t₁ - #H₁
         < #S + #T + #(s ∪ t) + #(s ∩ t) - #(s * t) + #(s₁ * t₁) := by
         have ih₁ :=
-          (add_le_add (card_le_card_mul_right hH₁ne) $ card_le_card_mul_right hH₁ne).trans
+          (add_le_add (card_le_card_mul_right hH₁ne) <| card_le_card_mul_right hH₁ne).trans
             (ih _ _ hst₁)
         zify at ih₁
         linarith [hstconv, ih₁]
@@ -508,7 +508,7 @@ theorem mul_kneser :
       (#S : ℤ) + #T + #s₂ + #t₂ - #H₂
        < #S + #T + #(s ∪ t) + #(s ∩ t) - #(s * t) + #(s₂ * t₂) := by
         have ih₂ :=
-          (add_le_add (card_le_card_mul_right hH₂ne) $ card_le_card_mul_right hH₂ne).trans
+          (add_le_add (card_le_card_mul_right hH₂ne) <| card_le_card_mul_right hH₂ne).trans
             (ih _ _ hst₂)
         zify at hstconv ih₂
         linarith [ih₂]
@@ -535,7 +535,7 @@ lemma mul_strict_kneser (h : #(s * (s * t).mulStab) + #(t * (s * t).mulStab) <
       #(s * t) + #(s * t).mulStab) :
     #(s * (s * t).mulStab) + #(t * (s * t).mulStab) ≤ #(s * t) :=
   Nat.le_of_lt_add_of_dvd h
-      ((card_mulStab_dvd_card_mul_mulStab _ _).add $ card_mulStab_dvd_card_mul_mulStab _ _) $
+      ((card_mulStab_dvd_card_mul_mulStab _ _).add <| card_mulStab_dvd_card_mul_mulStab _ _) <|
     card_mulStab_dvd_card _
 
 end Finset

@@ -274,14 +274,14 @@ lemma card_mulStab_dvd_card_mulStab (hs : s.Nonempty) (h : s.mulStab ⊆ t.mulSt
   letI : Fintype (stabilizer α s) := fintypeStabilizerOfMulStab hs
   letI : Fintype (stabilizer α t) := fintypeStabilizerOfMulStab ht
   convert Subgroup.card_dvd_of_le h using 1
-  simp [-mem_stabilizer_iff]
-  change _ = #(s.mulStab.attach.map
+  · simp [-mem_stabilizer_iff]
+    change _ = #(s.mulStab.attach.map
     ⟨Subtype.map id fun _ ↦ (mem_mulStab hs).1, Subtype.map_injective _ injective_id⟩)
-  simp
-  simp [-mem_stabilizer_iff]
-  change _ = #(t.mulStab.attach.map
-    ⟨Subtype.map id fun _ ↦ (mem_mulStab ht).1, Subtype.map_injective _ injective_id⟩)
-  simp
+    simp
+  · simp [-mem_stabilizer_iff]
+    change _ = #(t.mulStab.attach.map
+      ⟨Subtype.map id fun _ ↦ (mem_mulStab ht).1, Subtype.map_injective _ injective_id⟩)
+    simp
 
 /-- A version of Lagrange's theorem. -/
 @[to_additive "A version of Lagrange's theorem."]
@@ -305,10 +305,10 @@ lemma card_mul_card_eq_mulStab_card_mul_coe (s t : Finset α) :
   · simp
   obtain rfl | ht := t.eq_empty_or_nonempty
   · simp
-  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ $ ↑(s * t) +ˢ stabilizer α (s * t).toSet
+  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ <| ↑(s * t) +ˢ stabilizer α (s * t).toSet
   have that : ↥(stabilizer α (s * t).toSet) = ↥(s * t).mulStab := by
     rw [← SetLike.coe_sort_coe, ← coe_mulStab (hs.mul ht), Finset.coe_sort_coe]
-  have temp := this.trans $ (Equiv.cast that).prodCongr (Equiv.refl _)
+  have temp := this.trans <| (Equiv.cast that).prodCongr (Equiv.refl _)
   rw [preimage_image_quotientMk_mulStabilizer] at temp
   simpa [-coe_mul] using Fintype.card_congr temp
 

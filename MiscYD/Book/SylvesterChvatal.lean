@@ -349,7 +349,7 @@ lemma abd_special {a b c d : V} (habc : IsSimpleTriangle a b c) (hacd : sbtw a c
     Set.mem_singleton_iff, Set.mem_insert_iff, forall_eq_or_imp, forall_eq, le_refl,
     List.chain'_cons, List.chain'_singleton, not_false_eq_true, reduceCtorEq]
   intro l hl hl'
-  exact habc.2.2.2.2.2.2 l hl $ by simp [*, hl.close_middle hl'.1 hl'.2.2 hacd]
+  exact habc.2.2.2.2.2.2 l hl <| by simp [*, hl.close_middle hl'.1 hl'.2.2 hacd]
 
 lemma eqn_9 {a b c d : V} {P : List V} (habc : IsSimpleTriangle a b c) (hacd : sbtw a c d)
     (hbd' : b ≠ d) (hbd : ¬ simpleEdges.Adj b d)

@@ -56,7 +56,7 @@ theorem ceva_convexComb (hy : ∀ i ∈ s, y i ∈ convexHull 𝕜 (x '' (s \ {i
     obtain rfl | hij := eq_or_ne i j
     · rwa [centerMass_congr (w := (1 - c i) • w) (sdiff_singleton_eq_erase ..) _ fun _ _ ↦ rfl,
         centerMass_smul_left]
-      exact sub_ne_zero.2 hci.symm
+      · exact sub_ne_zero.2 hci.symm
       aesop
     have := (hz i hi).trans (hz j hj).symm
     simp [centerMass, sum_add_distrib]

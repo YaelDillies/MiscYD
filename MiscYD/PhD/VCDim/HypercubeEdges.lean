@@ -111,8 +111,8 @@ noncomputable def restrictFiniteSymmDiffComponent (𝓒 : Finset (Set α)) :
   have : (⋃ A ∈ 𝓒, A) ∆ ⋂ B ∈ 𝓒, B = ((⋃ A ∈ 𝓒, A) \ ⋂ B ∈ 𝓒, B) :=
     symmDiff_of_ge <| Set.biInter_subset_biUnion ⟨A, hA⟩
   stop
-  simp_rw [Set.image_preimage_eq_inter_range, Subtype.range_val, ← this, ← Set.inter_symmDiff_distrib_left, Set.inter_sdiff_left_comm _ (⋃ _, _)] at hAB
-
+  simp_rw [Set.image_preimage_eq_inter_range, Subtype.range_val, ← this,
+    ← Set.inter_symmDiff_distrib_left, Set.inter_sdiff_left_comm _ (⋃ _, _)] at hAB
 
 protected lemma _root_.IsNIPWith.restrictFiniteSymmDiffComponent (h𝓒 : IsNIPWith d 𝓒.toSet) :
     IsNIPWith d (restrictFiniteSymmDiffComponent 𝓒).toSet := sorry
@@ -148,7 +148,7 @@ lemma IsNIPWith.card_hypercubeEdgeFinset_le (h𝓕 : IsNIPWith d 𝓕.toSet) :
         _ = d * #𝓒 := by rw [card_restrictFiniteSymmDiffComponent]
     _  = d * #𝓕 := by
       rw [← mul_sum, ← card_biUnion, ← sup_eq_biUnion]
-      erw [(finiteSymmDiffFinpartition 𝓕).sup_parts]
-      exact supIndep_iff_pairwiseDisjoint.1 (finiteSymmDiffFinpartition 𝓕).supIndep
+      · erw [(finiteSymmDiffFinpartition 𝓕).sup_parts]
+      · exact supIndep_iff_pairwiseDisjoint.1 (finiteSymmDiffFinpartition 𝓕).supIndep
 
 end SetFamily

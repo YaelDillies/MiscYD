@@ -41,8 +41,8 @@ lemma mem_affineSpan_image [Nontrivial k] :
     rw [← Subtype.range_val (s := s.toSet), ← Set.range_comp] at hp
     obtain ⟨w, hw, rfl⟩ := eq_affineCombination_of_mem_affineSpan_of_fintype hp
     refine ⟨fun i ↦ if hi : i ∈ s then w ⟨i, hi⟩ else 0, ?_, ?_⟩
-    simp [Finset.sum_dite]
-    convert hw using 1
-    sorry
-    sorry
+    · simp [Finset.sum_dite]
+      convert hw using 1
+      sorry
+    · sorry
   mpr := by rintro ⟨w, hw₁, rfl⟩; exact affineCombination_mem_affineSpan' hw₁ (by aesop)

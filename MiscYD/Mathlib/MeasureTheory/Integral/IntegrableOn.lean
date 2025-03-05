@@ -21,3 +21,5 @@ lemma Integrable.of_bound [IsFiniteMeasure μ] (hf : AEStronglyMeasurable f μ)
 
 lemma IntegrableOn.of_bound (hs : μ s < ∞) (hf : AEStronglyMeasurable f (μ.restrict s))
     (hfC : ∀ᵐ x ∂μ.restrict s, ‖f x‖ ≤ C) : IntegrableOn f s μ := ⟨hf, .restrict_of_bound hs hfC⟩
+
+end MeasureTheory
