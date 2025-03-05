@@ -1,5 +1,6 @@
 import Mathlib.Algebra.BigOperators.Group.Finset.Defs
 import Mathlib.Data.Fin.VecNotation
+import Mathlib.Data.Fintype.Basic
 
 open scoped BigOperators
 

@@ -80,7 +80,7 @@ lemma mulStab_mul_ssubset_mulStab (hs₁ : (s ∩ a • C.mulStab).Nonempty)
   rw [mem_mulStab' ⟨x * y, hxy⟩]
   push_neg
   refine ⟨a * c * (b * d), by convert hxy, ?_⟩
-  rw [smul_eq_mul, mul_comm w, ← smul_eq_mul (a' := w), hwz]
+  rw [smul_eq_mul, mul_comm w, ← smul_eq_mul (b := w), hwz]
   exact not_mem_mono (mul_subset_mul inter_subset_left inter_subset_left) hzst
 
 @[to_additive]

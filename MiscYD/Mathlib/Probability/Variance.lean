@@ -28,7 +28,7 @@ lemma variance_congr_ae (hXY : X =ᵐ[μ] Y) : Var[X ; μ] = Var[Y ; μ] := by
 variable [IsZeroOrProbabilityMeasure μ]
 
 -- TODO: Replace `variance_def'`
-lemma variance_eq_integral_sq_sub_sq_integral (hX : Memℒp X 2 μ) :
+lemma variance_eq_integral_sq_sub_sq_integral (hX : MemLp X 2 μ) :
     variance X μ = μ[X ^ 2] - μ[X] ^ 2 := by
   obtain rfl | hμ := eq_zero_or_isProbabilityMeasure μ
   · simp
