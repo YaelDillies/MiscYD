@@ -37,8 +37,7 @@ jobs:
         run: cp README.md website/index.md
 
       - name: Check MiscYD.Mathlib only imports from Mathlib or MiscYD.Mathlib
-        run: |
-          python3 scripts/check_mathlib_imports.py
+        run: python3 scripts/check_mathlib_imports.py
 
       - name: Upstreaming dashboard
         run: |
