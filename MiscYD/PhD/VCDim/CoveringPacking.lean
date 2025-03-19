@@ -6,10 +6,8 @@ Authors: Yaël Dillies
 import Mathlib.Combinatorics.Enumerative.DoubleCounting
 import MiscYD.Mathlib.Data.ENat.Lattice
 import MiscYD.Mathlib.Data.Set.Card
-import MiscYD.Mathlib.Data.Set.Finite.Basic
 import MiscYD.Mathlib.Topology.Basic
 import MiscYD.Mathlib.Topology.Compactness.Compact
-import MiscYD.Mathlib.Topology.MetricSpace.MetricSeparated
 import MiscYD.Mathlib.Topology.Separation.Basic
 import MiscYD.PhD.VCDim.Net
 

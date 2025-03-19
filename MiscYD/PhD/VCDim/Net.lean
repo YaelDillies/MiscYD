@@ -3,10 +3,9 @@ Copyright (c) 2025 Yaël Dillies. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies
 -/
+import Mathlib.Topology.MetricSpace.MetricSeparated
 import Mathlib.Topology.MetricSpace.Thickening
 import MiscYD.Mathlib.Topology.EMetricSpace.Defs
-import MiscYD.Mathlib.Topology.MetricSpace.MetricSeparated
-import MiscYD.Mathlib.Topology.MetricSpace.Pseudo.Basic
 
 /-!
 # Nets

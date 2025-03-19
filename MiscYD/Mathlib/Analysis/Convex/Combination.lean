@@ -39,12 +39,12 @@ lemma centerMass_union (hst : Disjoint s t) (hs : (∀ i ∈ s, w i = 0) ∨ ∑
   obtain hs | hs := hs
   · simp only [sum_union hst, sum_eq_zero hs, zero_add] at hw₁
     simp only [centerMass, sum_union hst, sum_eq_zero hs, hw₁, zero_add, inv_one, smul_add,
-      one_smul, inv_zero, zero_smul, smul_zero, add_left_eq_self]
+      one_smul, inv_zero, zero_smul, smul_zero, add_eq_right]
     exact sum_eq_zero fun i hi ↦ by simp [hs _ hi]
   obtain ht | ht := ht
   · simp only [sum_union hst, sum_eq_zero ht, add_zero] at hw₁
     simp only [centerMass, sum_union hst, hw₁, sum_eq_zero ht, add_zero, inv_one, smul_add,
-      one_smul, inv_zero, zero_smul, smul_zero, add_right_eq_self]
+      one_smul, inv_zero, zero_smul, smul_zero, add_eq_left]
     exact sum_eq_zero fun i hi ↦ by simp [ht _ hi]
   · simp [centerMass, hs, ht, hst, sum_union, hw₁]
 

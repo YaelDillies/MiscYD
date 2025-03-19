@@ -6,7 +6,7 @@ Authors: Yaël Dillies
 import Mathlib.Analysis.Normed.Lp.WithLp
 import Mathlib.Data.Complex.Exponential
 import Mathlib.Probability.CondVar
-import MiscYD.Mathlib.Topology.MetricSpace.MetricSeparated
+import Mathlib.Topology.MetricSpace.MetricSeparated
 import MiscYD.PhD.VCDim.HypercubeEdges
 
 /-!

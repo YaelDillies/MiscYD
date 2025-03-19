@@ -131,7 +131,7 @@ lemma IsNIPWith.card_hypercubeEdgeFinset_le (h𝓕 : IsNIPWith d 𝓕.toSet) :
       simp +contextual only [finiteSymmDiffFinpartition, mem_image, ne_eq, hypercubeEdgeFinset,
         disjoint_left, mem_filter, mem_product, and_true, not_and, and_imp,
         forall_exists_index, Prod.forall, forall_apply_eq_imp_iff₂, forall_const,
-        filter_finite_symmDiff_inj]
+        filter_finite_symmDiff_inj, Set.PairwiseDisjoint, Set.Pairwise, Finset.mem_coe]
       refine fun A hA B hB hAB C D hC hAC hD hAD hCD hBC hBD ↦ hAB ?_
       exact (hAC.union <| symmDiff_comm B C ▸ hBC).subset <| symmDiff_triangle ..
     _ ≤ ∑ 𝓒 ∈ (finiteSymmDiffFinpartition 𝓕).parts, d * #𝓒 := by

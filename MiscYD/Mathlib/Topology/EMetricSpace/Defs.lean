@@ -1,11 +1,5 @@
 import Mathlib.Topology.EMetricSpace.Defs
 
-/-!
-# TODO
-
-Fix the `EMetricSpace` docstring.
--/
-
 namespace EMetric
 variable {X : Type*} [EMetricSpace X] {x : X}
 

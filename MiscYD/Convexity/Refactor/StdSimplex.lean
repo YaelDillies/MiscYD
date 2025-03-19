@@ -1,5 +1,3 @@
-import Mathlib.Algebra.BigOperators.Finsupp
-import Mathlib.Algebra.BigOperators.GroupWithZero.Action
 import Mathlib.Algebra.Module.BigOperators
 import Mathlib.Algebra.Order.Module.OrderedSMul
 import Mathlib.Data.Countable.Small
@@ -37,13 +35,13 @@ attribute [simp] sum_toFinsupp_eq_one
 
 @[simp] lemma coe_mk (w : ι →₀ R) (hw₀ hw₁) : ⇑(mk w hw₀ hw₁) = w := rfl
 
-@[simps! (config := .asFn), simps! apply toFinsupp]
+@[simps! -fullyApplied, simps! apply toFinsupp]
 def single (i : ι) : StdSimplex ι R where
   toFinsupp := .single i 1
   nonneg' := by simp
   sum_toFinsupp_eq_one := by simp
 
-@[simps! (config := .asFn), simps! apply toFinsupp]
+@[simps! -fullyApplied, simps! apply toFinsupp]
 def double (i j : ι) (a b : R) (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b = 1) : StdSimplex ι R where
   toFinsupp := .single i a + .single j b
   nonneg' := by apply add_nonneg <;> simpa
@@ -54,7 +52,7 @@ def double (i j : ι) (a b : R) (ha : 0 ≤ a) (hb : 0 ≤ b) (hab : a + b = 1) 
 
 section restrict
 
-@[simps! (config := .asFn), simps! apply toFinsupp]
+@[simps! -fullyApplied, simps! apply toFinsupp]
 def restrict (w : StdSimplex ι R) : StdSimplex w.support R where
   toFun i := w i
   support := univ
@@ -84,7 +82,7 @@ end domCongr
 
 section shrink
 
-@[simps! (config := .asFn), simps! apply toFinsupp]
+@[simps! -fullyApplied, simps! apply toFinsupp]
 def shrink (w : StdSimplex ι R) : StdSimplex (Shrink.{0} w.support) R :=
   domCongr (equivShrink.{0} w.support) w.restrict
 
@@ -93,7 +91,7 @@ end shrink
 section mapDomain
 variable {κ μ : Type*}
 
-@[simps! (config := .asFn) toFinsupp]
+@[simps! -fullyApplied toFinsupp]
 def mapDomain (f : ι → κ) (w : StdSimplex ι R) : StdSimplex κ R where
   toFinsupp := w.toFinsupp.mapDomain f
   nonneg' := Finsupp.mapDomain_nonneg w.nonneg'
@@ -132,7 +130,7 @@ section sigma
 variable {ι' S : Type*} {κ : ι → Type*} {κ' : ι' → Type*} [OrderedSemiring S] [Module R S]
   [NoZeroSMulDivisors R S] [OrderedSMul R S]
 
-@[simps! (config := .asFn), simps! apply toFinsupp]
+@[simps! -fullyApplied, simps! apply toFinsupp]
 def sigma (w : StdSimplex ι R) (w' : ∀ i, StdSimplex (κ i) S) : StdSimplex (Σ i, κ i) S where
   toFun := fun ⟨i, j⟩ ↦ w i • w' i j
   support := w.support.sigma fun i ↦ (w' i).support

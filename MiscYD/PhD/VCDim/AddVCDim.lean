@@ -1,4 +1,4 @@
-import Mathlib.Algebra.Group.Pointwise.Finset.Basic
+import Mathlib.Algebra.Group.Action.Pointwise.Finset
 import Mathlib.Combinatorics.SetFamily.Shatter
 
 open scoped Pointwise

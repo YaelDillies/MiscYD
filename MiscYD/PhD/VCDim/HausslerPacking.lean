@@ -5,7 +5,6 @@ Authors: Yaël Dillies
 -/
 import Mathlib.Analysis.Normed.Lp.WithLp
 import Mathlib.Data.Complex.Exponential
-import MiscYD.Mathlib.Topology.MetricSpace.MetricSeparated
 import MiscYD.PhD.VCDim.SmallVCImpSmallCondVar
 
 /-!
