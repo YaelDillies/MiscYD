@@ -16,6 +16,9 @@ import MiscYD.Mathlib.Analysis.Convex.Combination
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
 import MiscYD.Mathlib.Data.ENNReal.Basic
 import MiscYD.Mathlib.Data.ENNReal.Order
+import MiscYD.Mathlib.Data.ENat.Lattice
+import MiscYD.Mathlib.Data.Set.Card
+import MiscYD.Mathlib.Data.Set.Finite.Basic
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
@@ -26,9 +29,17 @@ import MiscYD.Mathlib.Order.Flag
 import MiscYD.Mathlib.Order.RelIso.Group
 import MiscYD.Mathlib.Probability.CondVar
 import MiscYD.Mathlib.Probability.Variance
+import MiscYD.Mathlib.Topology.Basic
+import MiscYD.Mathlib.Topology.Compactness.Compact
+import MiscYD.Mathlib.Topology.EMetricSpace.Defs
 import MiscYD.Mathlib.Topology.MetricSpace.MetricSeparated
+import MiscYD.Mathlib.Topology.MetricSpace.Pseudo.Basic
+import MiscYD.Mathlib.Topology.MetricSpace.Pseudo.Defs
+import MiscYD.Mathlib.Topology.Separation.Basic
 import MiscYD.PhD.VCDim.AddVCDim
+import MiscYD.PhD.VCDim.CoveringPacking
 import MiscYD.PhD.VCDim.HausslerPacking
 import MiscYD.PhD.VCDim.HypercubeEdges
+import MiscYD.PhD.VCDim.Net
 import MiscYD.PhD.VCDim.SmallVCImpSmallCondVar
 import MiscYD.SetFamily.PosDiffs
