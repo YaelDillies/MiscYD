@@ -5,7 +5,6 @@ Authors: Yaël Dillies
 -/
 import Mathlib.Topology.MetricSpace.MetricSeparated
 import Mathlib.Topology.MetricSpace.Thickening
-import MiscYD.Mathlib.Topology.EMetricSpace.Defs
 
 /-!
 # Nets

@@ -1,5 +1,4 @@
 import Mathlib.Probability.Variance
-import MiscYD.Mathlib.Data.ENNReal.Order
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
 
@@ -73,7 +72,7 @@ lemma variance_of_ae_eq_zero_or_one (hXmeas : AEStronglyMeasurable X μ)
     _ = (μ {ω | X ω = 0}).toReal * (μ {ω | X ω = 1}).toReal := by
       rw [sq, ← one_sub_mul, integral_of_ae_eq_zero_or_one hXmeas.aestronglyMeasurable hX]
       congr
-      rw [← ENNReal.toReal_one, ← ENNReal.toReal_sub, ← prob_compl_eq_one_sub]
+      rw [← ENNReal.one_toReal, ← ENNReal.toReal_sub_of_le, ← prob_compl_eq_one_sub]
       · congr 1
         refine measure_congr ?_
         filter_upwards [hX]

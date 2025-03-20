@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies
 -/
 import Mathlib.Algebra.Group.Action.Pointwise.Set.Basic
+import Mathlib.Algebra.Order.Group.Action.End
 import Mathlib.Order.Chain
-import MiscYD.Mathlib.Algebra.Order.Group.Action.End
 
 /-!
 # Action on flags

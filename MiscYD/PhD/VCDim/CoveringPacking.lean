@@ -4,7 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies
 -/
 import Mathlib.Combinatorics.Enumerative.DoubleCounting
-import MiscYD.Mathlib.Data.ENat.Lattice
+import Mathlib.Data.ENat.Lattice
 import MiscYD.Mathlib.Data.Set.Card
 import MiscYD.Mathlib.Topology.Basic
 import MiscYD.Mathlib.Topology.Compactness.Compact
