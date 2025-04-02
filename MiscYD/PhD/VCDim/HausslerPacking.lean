@@ -5,7 +5,9 @@ Authors: Yaël Dillies
 -/
 import Mathlib.Analysis.Normed.Lp.WithLp
 import Mathlib.Data.Complex.Exponential
+import MiscYD.Mathlib.MeasureTheory.Function.LpSeminorm.Basic
 import MiscYD.PhD.VCDim.SmallVCImpSmallCondVar
+import MiscYD.PhD.VCDim.CoveringPacking
 
 /-!
 # Haussler's packing lemma
@@ -19,19 +21,44 @@ absolute constant `C`.
 * *Sphere Packing Numbers for Subsets of the Boolean n-Cube with Bounded
   Vapnik-Chervonenkis Dimension*, David Haussler
 * Write-up by Thomas Bloom: http://www.thomasbloom.org/notes/vc.html
+* High Dimensional Probability 8.3.18
 -/
 
-open Fintype Metric Real
-open scoped Finset NNReal
+open Fintype MeasureTheory Metric Real
+open scoped Finset ENNReal NNReal
 
 namespace SetFamily
-variable {α : Type*} [Fintype α] {𝓕 : Finset (Set α)} {k d : ℕ}
+variable {Ω : Type*} [MeasurableSpace Ω] {μ : Measure Ω} [IsProbabilityMeasure μ]
+    {p : ℝ} [Fact (1 ≤ p)] {ε : ℝ≥0} {k d : ℕ}
 
-/-- The **Haussler packing lemma** -/
-theorem haussler_packing (isNIPWith_𝓕 : IsNIPWith d 𝓕.toSet)
-    (isSeparated_𝓕 : IsSeparated (k / card α)
-      ((fun A : Set α ↦ (WithLp.equiv 1 _).symm A.indicator (1 : α → ℝ)) '' 𝓕))
-    (hk : k ≤ card α) : #𝓕 ≤ exp 1 * (d + 1) * (2 * exp 1 * (card α + 1) / (k + 2 * d + 2)) :=
+noncomputable def dimensionReductionConst (ε : ℝ) (𝓕 : Finset (Lp ℝ 2 μ)) : ℝ :=
+  ε ^ (-4 : ℝ) * log #𝓕
+
+-- lemma dimensionReductionConst_nonneg (hε )
+
+lemma dimension_reduction {𝓕 : Finset (Lp ℝ 2 μ)} (isSeparated_𝓕 : IsSeparated ε 𝓕.toSet) :
+    ∃ μ₀ : Measure Ω, {ω | μ₀ {ω} ≠ 0}.ncard ≤ dimensionReductionConst ε 𝓕 ∧ sorry := sorry
+
+def hausslerPackingConst : ℕ := sorry
+
+/-- The **Haussler packing lemma**. -/
+theorem haussler_packing_card_isSeparated {𝓕 : Finset (Lp ℝ 2 μ)}
+    (ae_eq_zero_or_one_of_mem_𝓕 : ∀ A ∈ 𝓕, ∀ᵐ ω ∂ μ, A ω = 0 ∨ A ω = 1)
+    (isNIPWith_𝓕 : IsNIPWith d <| (fun A : Lp ℝ 2 μ ↦ ⇑A ⁻¹' {1}) '' 𝓕.toSet)
+    (isSeparated_𝓕 : IsSeparated ε 𝓕.toSet) :
+    #𝓕 ≤ (2 / ε) ^ (hausslerPackingConst * d) :=
   sorry
+
+/-- The **Haussler packing lemma**. -/
+theorem haussler_packing_epackingNum {𝓕 : Set (Lp ℝ 2 μ)} (hε : ε ≠ 0)
+    (ae_eq_zero_or_one_of_mem_𝓕 : ∀ A ∈ 𝓕, ∀ᵐ ω ∂ μ, A ω = 0 ∨ A ω = 1)
+    (isNIPWith_𝓕 : IsNIPWith d <| (fun A : Lp ℝ 2 μ ↦ ⇑A ⁻¹' {1}) '' 𝓕) :
+    epackingNum ε 𝓕 ≤ (2 / ε : ℝ≥0∞) ^ (hausslerPackingConst * d) := by
+  refine coe_epackingNum_le_iff_forall_card_le.2 fun 𝓟 h𝓟𝓕 h𝓟 ↦ ?_
+  have := haussler_packing_card_isSeparated (fun A hA ↦ ae_eq_zero_or_one_of_mem_𝓕 _ <| h𝓟𝓕 hA)
+    (isNIPWith_𝓕.anti <| Set.image_subset _ <| h𝓟𝓕) h𝓟
+  rw [← ENNReal.coe_le_coe] at this
+  push_cast at this
+  rwa [ENNReal.coe_div hε] at this
 
 end SetFamily

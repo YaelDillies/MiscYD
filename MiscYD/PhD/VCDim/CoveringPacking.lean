@@ -4,8 +4,8 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies
 -/
 import Mathlib.Combinatorics.Enumerative.DoubleCounting
-import Mathlib.Data.ENat.Lattice
 import Mathlib.Data.Set.Card
+import MiscYD.Mathlib.Data.Real.ENatENNReal
 import MiscYD.Mathlib.Topology.Basic
 import MiscYD.Mathlib.Topology.Compactness.Compact
 import MiscYD.Mathlib.Topology.Separation.Basic
@@ -18,14 +18,14 @@ This file defines covering and packing numbers of a set in a metric space.
 
 For a set `s` in a metric space and a real number `ε > 0`:
 * the `ε`-covering number of `s` is the size of a minimal `ε`-net of `s` contained in `s`.
-* the `ε`-packing number of `s` is the size of a maximak `ε`-separated subset of `s`.
+* the `ε`-packing number of `s` is the size of a maximal `ε`-separated subset of `s`.
 
 ## References
 
 High Dimensional Probability, Section 4.2.
 -/
 
-open scoped Finset NNReal
+open scoped Finset ENNReal NNReal
 
 namespace Metric
 variable {X : Type*}
@@ -157,6 +157,14 @@ lemma epackingNum_le_iff_forall_card_le {n : ℕ∞} :
     obtain ⟨Q, hQP, hQ⟩ := Set.exists_subset_encard_eq hm
     rw [← hQ]
     exact h _ (by simp [← Set.encard_lt_top_iff, hQ]) (hQP.trans hPs) (hP.mono hQP)
+
+lemma coe_epackingNum_le_iff_forall_encard_le {r : ℝ≥0∞} :
+    ↑(epackingNum ε s) ≤ r ↔ ∀ ⦃P : Set X⦄, P ⊆ s → IsSeparated ε P → P.encard ≤ r := by
+  simp [epackingNum]
+
+lemma coe_epackingNum_le_iff_forall_card_le {r : ℝ≥0∞} :
+    epackingNum ε s ≤ r ↔ ∀ ⦃P : Finset X⦄, P.toSet ⊆ s → IsSeparated ε P.toSet → #P ≤ r := by
+  sorry
 
 lemma IsSeparated.encard_le_epackingNum (hPs : P ⊆ s) (hP : IsSeparated ε P) :
     P.encard ≤ epackingNum ε s := le_iSup₂_of_le P hPs <| le_iSup_of_le hP le_rfl

@@ -13,9 +13,11 @@ import MiscYD.Convexity.Refactor.Defs
 import MiscYD.Convexity.Refactor.StdSimplex
 import MiscYD.Mathlib.Analysis.Convex.Combination
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
+import MiscYD.Mathlib.Data.Real.ENatENNReal
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+import MiscYD.Mathlib.MeasureTheory.Function.LpSeminorm.Basic
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
 import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
