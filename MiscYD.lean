@@ -21,9 +21,6 @@ import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
 import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
 import MiscYD.Mathlib.Probability.CondVar
 import MiscYD.Mathlib.Probability.Variance
-import MiscYD.Mathlib.Topology.Basic
-import MiscYD.Mathlib.Topology.Compactness.Compact
-import MiscYD.Mathlib.Topology.Separation.Basic
 import MiscYD.PhD.VCDim.AddVCDim
 import MiscYD.PhD.VCDim.CoveringPacking
 import MiscYD.PhD.VCDim.HausslerPacking
