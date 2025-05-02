@@ -7,12 +7,13 @@ noncomputable section
 
 open Finset Function
 
-structure StdSimplex (ι R : Type*) [OrderedSemiring R] extends ι →₀ R where
+structure StdSimplex (ι R : Type*) [Semiring R] [PartialOrder R] [IsOrderedRing R]
+    extends ι →₀ R where
   nonneg' : 0 ≤ toFinsupp
   sum_toFinsupp_eq_one : toFinsupp.sum (fun _ a ↦ a) = 1
 
 namespace StdSimplex
-variable {ι R : Type*} [OrderedSemiring R]
+variable {ι R : Type*} [Semiring R] [PartialOrder R] [IsOrderedRing R]
 
 @[ext] lemma toFinsupp_injective : Injective (toFinsupp : StdSimplex ι R → ι →₀ R) :=
   fun w w' h ↦ by cases w; cases w'; congr!
@@ -127,8 +128,8 @@ lemma mapDomain_shrink (f : ι → κ) (w : StdSimplex ι R) :
 end mapDomain
 
 section sigma
-variable {ι' S : Type*} {κ : ι → Type*} {κ' : ι' → Type*} [OrderedSemiring S] [Module R S]
-  [NoZeroSMulDivisors R S] [OrderedSMul R S]
+variable {ι' S : Type*} {κ : ι → Type*} {κ' : ι' → Type*} [Semiring S] [PartialOrder S]
+  [IsOrderedRing S] [Module R S] [NoZeroSMulDivisors R S] [OrderedSMul R S]
 
 @[simps! -fullyApplied, simps! apply toFinsupp]
 def sigma (w : StdSimplex ι R) (w' : ∀ i, StdSimplex (κ i) S) : StdSimplex (Σ i, κ i) S where

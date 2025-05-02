@@ -3,8 +3,8 @@ import Mathlib.Analysis.Convex.Combination
 open AffineMap Finset
 
 section oldVars
-variable {ι R E : Type*} [LinearOrderedField R] [AddCommGroup E] [Module R E] {s : Finset ι}
-  {f : ι → E} {x : E}
+variable {ι R E : Type*} [Field R] [LinearOrder R] [IsStrictOrderedRing R] [AddCommGroup E]
+  [Module R E] {s : Finset ι} {f : ι → E} {x : E}
 
 lemma mem_convexHull_image :
     x ∈ convexHull R (f '' s) ↔
@@ -23,8 +23,8 @@ lemma mem_convexHull_image :
 
 end oldVars
 
-variable {ι 𝕜 V : Type*} [LinearOrderedField 𝕜] [AddCommGroup V] [Module 𝕜 V]
-  {s t : Finset ι} {v w : ι → 𝕜} {x y : ι → V} {i : ι}
+variable {ι 𝕜 V : Type*} [Field 𝕜] [AddCommGroup V]
+  [Module 𝕜 V] {s t : Finset ι} {v w : ι → 𝕜} {x y : ι → V} {i : ι}
 
 lemma centerMass_congr (hst : s = t) (hvw : ∀ i ∈ t, v i = w i) (hxy : ∀ i ∈ t, x i = y i) :
     s.centerMass v x = t.centerMass w y := by
@@ -54,16 +54,6 @@ lemma centerMass_union_of_ne_zero (hst : Disjoint s t) (hs : ∑ i ∈ s, w i �
       (∑ i ∈ s, w i) • s.centerMass w x + (∑ i ∈ t, w i) • t.centerMass w x :=
   centerMass_union hst (.inr hs) (.inr ht) hw₁
 
-lemma centerMass_union_of_nonneg (hst : Disjoint s t) (hw₀ : ∀ i ∈ s ∪ t, 0 ≤ w i)
-    (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
-    (s ∪ t).centerMass w x =
-      (∑ i ∈ s, w i) • s.centerMass w x + (∑ i ∈ t, w i) • t.centerMass w x := by
-  refine centerMass_union hst ?_ ?_ hw₁
-  · rw [← sum_eq_zero_iff_of_nonneg fun j hj ↦ hw₀ _ <| subset_union_left hj]
-    exact em _
-  · rw [← sum_eq_zero_iff_of_nonneg fun j hj ↦ hw₀ _ <| subset_union_right hj]
-    exact em _
-
 lemma lineMap_centerMass_centerMass (hst : Disjoint s t)
     (hs : (∀ i ∈ s, w i = 0) ∨ ∑ i ∈ s, w i ≠ 0) (ht : (∀ i ∈ t, w i = 0) ∨ ∑ i ∈ t, w i ≠ 0)
     (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
@@ -75,12 +65,6 @@ lemma lineMap_centerMass_centerMass_of_ne_zero (hst : Disjoint s t) (hs : ∑ i 
     (ht : ∑ i ∈ t, w i ≠ 0) (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
     lineMap (s.centerMass w x) (t.centerMass w x) (∑ i ∈ t, w i) = (s ∪ t).centerMass w x :=
   lineMap_centerMass_centerMass hst (.inr hs) (.inr ht) hw₁
-
-lemma lineMap_centerMass_centerMass_of_nonneg (hst : Disjoint s t) (hw₀ : ∀ i ∈ s ∪ t, 0 ≤ w i)
-    (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
-    lineMap (s.centerMass w x) (t.centerMass w x) (∑ i ∈ t, w i) = (s ∪ t).centerMass w x := by
-  rw [lineMap_apply_module, ← hw₁, sum_union hst, add_sub_cancel_right,
-    centerMass_union_of_nonneg hst hw₀ hw₁]
 
 lemma lineMap_centerMass_sdiff (hi : i ∈ s) (hi₀ : w i ≠ 0) (hi₁ : w i ≠ 1)
     (hw₁ : ∑ i ∈ s, w i = 1) :
@@ -100,6 +84,24 @@ lemma lineMap_centerMass_sdiff_singleton_of_ne_one (hi : i ∈ s) (hi₁ : w i �
   · simp [centerMass_sdiff_of_weight_eq_zero hi, hi₀]
   · rw [← centerMass_singleton i x hi₀, ← sum_singleton w i, lineMap_centerMass_centerMass] <;>
       simp [*, union_eq_left.2, sub_eq_zero, eq_comm (b := w _)]
+
+variable [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜]
+
+lemma centerMass_union_of_nonneg (hst : Disjoint s t) (hw₀ : ∀ i ∈ s ∪ t, 0 ≤ w i)
+    (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
+    (s ∪ t).centerMass w x =
+      (∑ i ∈ s, w i) • s.centerMass w x + (∑ i ∈ t, w i) • t.centerMass w x := by
+  refine centerMass_union hst ?_ ?_ hw₁
+  · rw [← sum_eq_zero_iff_of_nonneg fun j hj ↦ hw₀ _ <| subset_union_left hj]
+    exact em _
+  · rw [← sum_eq_zero_iff_of_nonneg fun j hj ↦ hw₀ _ <| subset_union_right hj]
+    exact em _
+
+lemma lineMap_centerMass_centerMass_of_nonneg (hst : Disjoint s t) (hw₀ : ∀ i ∈ s ∪ t, 0 ≤ w i)
+    (hw₁ : ∑ i ∈ s ∪ t, w i = 1) :
+    lineMap (s.centerMass w x) (t.centerMass w x) (∑ i ∈ t, w i) = (s ∪ t).centerMass w x := by
+  rw [lineMap_apply_module, ← hw₁, sum_union hst, add_sub_cancel_right,
+    centerMass_union_of_nonneg hst hw₀ hw₁]
 
 lemma lineMap_centerMass_sdiff_singleton_of_nonneg (hi : i ∈ s) (hw₀ : ∀ j ∈ s \ {i}, 0 ≤ w j)
     (hw₁ : ∑ j ∈ s, w j = 1) :

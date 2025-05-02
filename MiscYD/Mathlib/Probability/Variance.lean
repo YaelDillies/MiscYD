@@ -1,6 +1,6 @@
 import Mathlib.Probability.Variance
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
-import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
+import MiscYD.Mathlib.MeasureTheory.Integral.Bochner.Set
 
 /-!
 # TODO
@@ -38,9 +38,8 @@ lemma variance_eq_integral_sq_sub_sq_integral (hX : MemLp X 2 μ) :
   · apply hX.integrable_sq.add
     apply integrable_const
   · exact ((hX.integrable one_le_two).const_mul 2).mul_const' _
-  simp only [Pi.pow_apply, integral_const, measure_univ, ENNReal.toReal_one, smul_eq_mul, one_mul,
-    Pi.mul_apply, Pi.ofNat_apply, Nat.cast_ofNat, integral_mul_right, integral_mul_left]
-  ring
+  · simp [integral_mul_const, integral_const_mul, Measure.real]
+    ring
 
 /-- **Variance of a Bernoulli random variable**.
 

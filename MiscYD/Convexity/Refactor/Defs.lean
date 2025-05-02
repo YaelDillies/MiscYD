@@ -10,7 +10,7 @@ noncomputable section
 open Finset Function Set StdSimplex
 
 namespace ConvexityRefactor
-variable (R E : Type*) [LinearOrderedSemiring R] [ExistsAddOfLE R]
+variable (R E : Type*) [Semiring R] [LinearOrder R] [IsStrictOrderedRing R] [ExistsAddOfLE R]
 
 class ConvexSpace where
   sConvexComb : StdSimplex E R → E

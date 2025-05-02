@@ -16,8 +16,8 @@ import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
+import MiscYD.Mathlib.MeasureTheory.Integral.Bochner.Set
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
-import MiscYD.Mathlib.MeasureTheory.Integral.SetIntegral
 import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
 import MiscYD.Mathlib.Probability.CondVar
 import MiscYD.Mathlib.Probability.Variance

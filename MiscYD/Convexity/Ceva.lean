@@ -13,8 +13,8 @@ import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 
 open AffineMap Finset
 
-variable {ι 𝕜 V : Type*} [DecidableEq ι] [LinearOrderedField 𝕜] [AddCommGroup V] [Module 𝕜 V]
-  {s t : Finset ι} {w : ι → 𝕜} {x y : ι → V} {i : ι}
+variable {ι 𝕜 V : Type*} [DecidableEq ι] [Field 𝕜] [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜]
+  [AddCommGroup V] [Module 𝕜 V] {s t : Finset ι} {w : ι → 𝕜} {x y : ι → V} {i : ι}
 
 -- /-- **Ceva's theorem** for affine combinations. -/
 -- theorem ceva_affineComb [Nontrivial 𝕜] (hy : ∀ i ∈ s, y i ∈ affineSpan 𝕜 (x '' (s \ {i})))

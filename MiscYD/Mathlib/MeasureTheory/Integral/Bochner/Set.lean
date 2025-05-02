@@ -1,4 +1,4 @@
-import Mathlib.MeasureTheory.Integral.SetIntegral
+import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Probability.Notation
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 
@@ -51,7 +51,7 @@ lemma integral_of_ae_eq_zero_or_one [IsFiniteMeasure μ] (hXmeas : AEStronglyMea
       congr 1
       · exact setIntegral_congr_ae (hXmeas.measurable <| .singleton 0) (by simp)
       · exact setIntegral_congr_ae (hXmeas.measurable <| .singleton 1) (by simp)
-    _ = _ := by simp
+    _ = _ := by simp [Measure.real]
 
 /-- **Expectation of a Bernoulli random variable**.
 
