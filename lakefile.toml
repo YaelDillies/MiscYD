@@ -1,4 +1,5 @@
 name = "MiscYD"
+keywords = ["math", "combinatorics", "additive-combinatorics", "convex-geometry", "measure-theory", "probability"]
 defaultTargets = ["MiscYD"]
 
 [leanOptions]
