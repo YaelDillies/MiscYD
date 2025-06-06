@@ -125,20 +125,19 @@ theorem thm_two (h : ∀ x y z : V, ¬ NotCollinear x y z) :
     (Set.univ : Set V).IsLine := by
   let S : Set (Set V) := setOf Set.IsLine
   have : S.Nonempty := let ⟨x, y, hxy⟩ := exists_pair_ne V; ⟨_, Line_isLine hxy⟩
-  obtain ⟨L, hL, hL'⟩ := S.toFinite.exists_maximal_wrt id S this
-  dsimp at hL'
+  obtain ⟨L, hL, hL'⟩ := S.toFinite.exists_maximal this
+  simp_rw [← le_imp_eq_iff_le_imp_le] at hL'
   suffices L = Set.univ by rwa [← this]
-  rw [Set.eq_univ_iff_forall]
-  by_contra!
+  refine Set.eq_univ_of_forall fun c ↦ ?_
+  by_contra! hc
   obtain ⟨a, b, hab, rfl⟩ := hL
-  obtain ⟨c, hc'⟩ := this
-  have hac : a ≠ c := fun h => hc' (subset_generateLine _ (by simp [h]))
-  have hbc : b ≠ c := fun h => hc' (subset_generateLine _ (by simp [h]))
+  have hac : a ≠ c := fun h => hc (subset_generateLine _ (by simp [h]))
+  have hbc : b ≠ c := fun h => hc (subset_generateLine _ (by simp [h]))
   simp only [NotCollinear, not_and, not_forall, not_not] at h
   obtain ⟨M, hM, habc⟩ := h a b c hab hac hbc
-  have := hL' M hM (Set.IsLine.generateLine_subset (habc.trans' (by simp)) hM)
-  rw [this] at hc'
-  exact hc' (habc (by simp))
+  have := hL' hM (Set.IsLine.generateLine_subset (habc.trans' (by simp)) hM)
+  rw [← this] at hc
+  exact hc (habc (by simp))
 
 theorem thm_two' (h : ∀ x y z : V, ¬ NotCollinear x y z) :
     ∃ l : Set V, l = Set.univ ∧ l.IsLine :=
@@ -166,13 +165,13 @@ lemma one_implies_two (h : ∃ x y z : V, NotCollinear x y z) :
   let S : Set (V × V × V) := setOf (fun ⟨a, b, c⟩ => NotCollinear a b c)
   have : S.Nonempty := let ⟨x, y, z, hxyz⟩ := h; ⟨(x, y, z), hxyz⟩
   let f : V × V × V → ℝ := fun ⟨a, b, c⟩ => dist a b + dist b c + dist c a
-  obtain ⟨⟨a, b, c⟩, (h₁ : NotCollinear _ _ _), h₂⟩ := S.toFinite.exists_minimal_wrt f S this
+  obtain ⟨⟨a, b, c⟩, (h₁ : NotCollinear _ _ _), h₂⟩ := S.toFinite.exists_minimalFor f S this
   simp only [Prod.forall, Set.mem_setOf_eq] at h₂
   replace h₂ : ∀ a' b' c' : V, NotCollinear a' b' c' →
       dist a b + dist b c + dist c a ≤ dist a' b' + dist b' c' + dist c' a' := by
     intro a' b' c' hL
     by_contra! h
-    exact h.ne' (h₂ a' b' c' hL h.le)
+    exact h.not_le (h₂ a' b' c' hL h.le)
   simp only [IsSimpleTriangle]
   by_contra! cont
   wlog hab : ¬ simpleEdges.Adj a b generalizing a b c
@@ -313,9 +312,9 @@ lemma exists_min_dist (V : Type*) [MetricSpace V] [Finite V] :
   · exact ⟨1, zero_lt_one, fun x y ↦ by simp [Subsingleton.elim x y]⟩
   let S : Set (V × V) := (Set.diagonal V)ᶜ
   have : S.Nonempty := have ⟨x, y, hxy⟩ := exists_pair_ne V; ⟨(x, y), by simp [S, hxy]⟩
-  obtain ⟨⟨x, y⟩, (hxy : x ≠ y), h⟩ := S.toFinite.exists_minimal_wrt (Function.uncurry dist) _ this
+  obtain ⟨⟨x, y⟩, (hxy : x ≠ y), h⟩ := S.toFinite.exists_minimalFor (Function.uncurry dist) _ this
   simp only [Set.mem_compl_iff, Set.mem_diagonal_iff, Function.uncurry_apply_pair, Prod.forall] at h
-  exact ⟨dist x y, by simp [hxy], fun a b hab => le_of_not_lt (fun h' => h'.ne' (h _ _ hab h'.le))⟩
+  exact ⟨dist x y, by simp [hxy], fun a b hab ↦ le_of_not_lt fun h' ↦ h'.not_le (h _ _ hab h'.le)⟩
 
 lemma length_mul_le_pathLength_add {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ x y : V, x ≠ y → r ≤ dist x y) :
@@ -366,10 +365,9 @@ lemma exists_simple_split_right {a b : V} (hab : a ≠ b) (hab' : ¬ simpleEdges
   simp only [simpleEdges_adj, hab, not_false_eq_true, true_and, ne_eq, not_forall, not_not] at hab'
   obtain ⟨c', hc'⟩ := hab'
   let S : Set V := setOf (sbtw a · b)
-  obtain ⟨c, hc : sbtw _ c _, hcmin⟩ := S.toFinite.exists_minimal_wrt (dist b) _ ⟨c', hc'⟩
+  obtain ⟨c, hc : sbtw _ c _, hcmin⟩ := S.toFinite.exists_minimalFor (dist b) _ ⟨c', hc'⟩
   refine ⟨c, hc, hc.ne23, fun c' hc' => ?_⟩
-  have : dist b c ≤ dist b c' :=
-    le_of_not_lt fun h => h.ne' <| hcmin _ (hc.trans_right' hc') h.le
+  have : dist b c ≤ dist b c' := le_of_not_lt fun h => h.not_le <| hcmin (hc.trans_right' hc') h.le
   rw [dist_comm b, dist_comm b] at this
   have : dist c c' ≤ 0 := by linarith [hc'.dist]
   simp only [dist_le_zero] at this
@@ -549,11 +547,11 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
   let S : Set (V × V × V) := setOf (fun ⟨x, y, z⟩ => IsSimpleTriangle x y z)
   have : S.Nonempty := let ⟨x, y, z, hxyz⟩ := h; ⟨(x, y, z), hxyz⟩
   obtain ⟨⟨a, b, c⟩, (habc : IsSimpleTriangle a b c), hmin⟩ :=
-    S.toFinite.exists_minimal_wrt (fun ⟨x, y, z⟩ => Delta x y z) S this
+    S.toFinite.exists_minimalFor (fun ⟨x, y, z⟩ => Delta x y z) S this
   replace hmin : ∀ a' b' c' : V, IsSimpleTriangle a' b' c' → Delta a b c ≤ Delta a' b' c' := by
     intro a' b' c' h
     by_contra! h'
-    exact h'.ne' (hmin (a', b', c') h h'.le)
+    exact h'.not_le (hmin (j := (a', b', c')) h h'.le)
   refine ⟨a, c, habc.2.2.1.1.symm, ?_⟩
   by_contra! h3
   obtain ⟨d, hd, hd'⟩ := exists_third habc.2.2.1.1.symm h3
@@ -568,7 +566,7 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
     exact hmin _ _ _ h'
   clear hd'
   let S : Set V := setOf (sbtw a c)
-  obtain ⟨d, hd : sbtw _ _ d, hdmin⟩ := S.toFinite.exists_minimal_wrt (dist c) S ⟨d, acd⟩
+  obtain ⟨d, hd : sbtw _ _ d, hdmin⟩ := S.toFinite.exists_minimalFor (dist c) S ⟨d, acd⟩
   have hbd' : b ≠ d := by
     rintro rfl
     have := habc.2.2.2.2.2.2 (Line a c) (Line_isLine hd.ne12)
@@ -576,7 +574,7 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
   replace hdmin : ∀ d', sbtw a c d' → dist c d ≤ dist c d' := by
     intro d' hd'
     by_contra! hd''
-    exact hd''.ne' (hdmin d' hd' hd''.le)
+    exact hd''.not_le (hdmin hd' hd''.le)
   have hcd : simpleEdges.Adj c d := by
     use hd.2.2.1
     intro e he
@@ -590,11 +588,11 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
     have ⟨n, hn⟩ := uniformly_bounded_of_chain_ne_of_pathLength_le V [a, b, d].pathLength
     exact (List.finite_length_le _ _).subset fun l hl => hn l hl.chain_ne hl.pathLength_le
   have ⟨P, (hP : P.Special a b d), hPmin⟩ :=
-    this.exists_minimal_wrt List.pathLength S ⟨[a, b, d], abd_special habc hd hbd' hbd⟩
+    this.exists_minimalFor List.pathLength S ⟨[a, b, d], abd_special habc hd hbd' hbd⟩
   replace hPmin : ∀ P' : List V, P'.Special a b d → P.pathLength ≤ P'.pathLength := by
     intro P' hP'
     by_contra! h
-    exact h.ne' (hPmin P' hP' h.le)
+    exact h.not_le (hPmin hP' h.le)
   match P with
   | (a₁ :: a₂ :: a₃ :: l) =>
     simp only [List.Special] at hP

@@ -1,4 +1,4 @@
-import Mathlib.Probability.Variance
+import Mathlib.Probability.Moments.Variance
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.Integral.Bochner.Set
 

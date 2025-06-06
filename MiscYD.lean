@@ -20,7 +20,7 @@ import MiscYD.Mathlib.MeasureTheory.Integral.Bochner.Set
 import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
 import MiscYD.Mathlib.Probability.CondVar
-import MiscYD.Mathlib.Probability.Variance
+import MiscYD.Mathlib.Probability.Moments.Variance
 import MiscYD.PhD.VCDim.AddVCDim
 import MiscYD.PhD.VCDim.CoveringPacking
 import MiscYD.PhD.VCDim.HausslerPacking

@@ -62,7 +62,7 @@ noncomputable def finiteSymmDiffFinpartition (𝓕 : Finset (Set α)) : Finparti
     simp only [sup_image, le_antisymm_iff, Finset.sup_le_iff, le_eq_subset,
       filter_subset, implies_true, true_and, Function.id_comp]
     exact fun A hA ↦ mem_sup.2 ⟨A, hA, mem_filter.2 ⟨hA, by simp⟩⟩
-  not_bot_mem := by
+  bot_notMem := by
     simp only [bot_eq_empty, mem_image, filter_eq_empty_iff, not_exists, not_and, not_forall,
       Classical.not_imp, Decidable.not_not]
     exact fun A hA ↦ ⟨A, hA, by simp⟩

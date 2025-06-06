@@ -81,7 +81,7 @@ lemma mulStab_mul_ssubset_mulStab (hs₁ : (s ∩ a • C.mulStab).Nonempty)
   push_neg
   refine ⟨a * c * (b * d), by convert hxy, ?_⟩
   rw [smul_eq_mul, mul_comm w, ← smul_eq_mul (b := w), hwz]
-  exact not_mem_mono (mul_subset_mul inter_subset_left inter_subset_left) hzst
+  exact notMem_mono (mul_subset_mul inter_subset_left inter_subset_left) hzst
 
 @[to_additive]
 lemma mulStab_union (hs₁ : (s ∩ a • C.mulStab).Nonempty) (ht₁ : (t ∩ b • C.mulStab).Nonempty)
@@ -150,7 +150,7 @@ lemma mul_aux1
       rw [← hCun]
       linarith [hconv, hnotconv]
     _ = #H - #(s' * t') - #H' := by
-      rw [card_union_of_disjoint hdisj, Int.ofNat_add]
+      rw [card_union_of_disjoint hdisj, Int.natCast_add]
       abel
     _ ≤ #H - #(s' * H') - #(t' * H') := by linarith [ih]
 
@@ -500,7 +500,7 @@ theorem mul_kneser :
         · norm_cast
           simpa only [← card_union_of_disjoint hCst₁] using card_le_card hC₁st
       _ ≤ #H := by
-        simpa only [sub_le_iff_le_add, ← Int.ofNat_add, Int.ofNat_le, add_comm _ #C,
+        simpa only [sub_le_iff_le_add, ← Int.natCast_add, Int.ofNat_le, add_comm _ #C,
           add_comm _ #(s ∩ t)] using hCcard
 
   have aux3₂ : (#S : ℤ) + #T + #s₂ + #t₂ - #H₂ < #H :=
@@ -517,7 +517,7 @@ theorem mul_kneser :
         · norm_cast
           simpa only [← card_union_of_disjoint hCst₂] using card_le_card hC₂st
       _ ≤ #H := by
-        simpa only [sub_le_iff_le_add, ← Int.ofNat_add, Int.ofNat_le, add_comm _ #C,
+        simpa only [sub_le_iff_le_add, ← Int.natCast_add, Int.ofNat_le, add_comm _ #C,
           add_comm _ #(s ∩ t)] using hCcard
   have aux4₁ : #H ≤ #S + (#s₁ + #t₂) := by
     rw [← card_smul_finset a H]
