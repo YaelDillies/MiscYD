@@ -164,7 +164,7 @@ lemma le_card_union_add_card_mulStab_union :
   -- -- `mulStab (s ∪ t) = H` in the notes
   -- suffices hHst : (#Hs - 1) * (#Ht - 1) ≤ #(s \ t) * #(t \ s) by
   --   by_contra!
-  --   exact hHst.not_lt <| CanonicallyOrderedCommSemiring.mul_lt_mul_of_lt_of_lt
+  --   exact hHst.not_gt <| CanonicallyOrderedCommSemiring.mul_lt_mul_of_lt_of_lt
   --    (this.1.trans_le <|
   --     tsub_le_tsub_left (one_le_card.2 Hst) _) <| this.2.trans_le <|
   --     tsub_le_tsub_left (one_le_card.2 Hst) _

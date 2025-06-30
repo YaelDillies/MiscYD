@@ -177,7 +177,7 @@ lemma ecoveringNum_le_epackingNum : ecoveringNum ε s ≤ epackingNum ε s := by
     simp only [← h, ne_eq, Set.encard_eq_top_iff, Set.not_infinite] at hs
     rw [← h]
     exact (IsNet.of_maximal_isSeparated <| maximal_iff_forall_gt.2 ⟨⟨hNs, hN⟩, fun M hNM ⟨hMs, hM⟩ ↦
-      (hM.encard_le_epackingNum hMs).not_lt <| h ▸ hs.encard_lt_encard hNM⟩).ecoveringNum_le_encard
+      (hM.encard_le_epackingNum hMs).not_gt <| h ▸ hs.encard_lt_encard hNM⟩).ecoveringNum_le_encard
       hNs
 
 /-- HDP 4.2.8 -/

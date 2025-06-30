@@ -126,7 +126,7 @@ theorem thm_two (h : ∀ x y z : V, ¬ NotCollinear x y z) :
   let S : Set (Set V) := setOf Set.IsLine
   have : S.Nonempty := let ⟨x, y, hxy⟩ := exists_pair_ne V; ⟨_, Line_isLine hxy⟩
   obtain ⟨L, hL, hL'⟩ := S.toFinite.exists_maximal this
-  simp_rw [← le_imp_eq_iff_le_imp_le] at hL'
+  simp_rw [← le_imp_eq_iff_le_imp_ge'] at hL'
   suffices L = Set.univ by rwa [← this]
   refine Set.eq_univ_of_forall fun c ↦ ?_
   by_contra! hc
@@ -171,7 +171,7 @@ lemma one_implies_two (h : ∃ x y z : V, NotCollinear x y z) :
       dist a b + dist b c + dist c a ≤ dist a' b' + dist b' c' + dist c' a' := by
     intro a' b' c' hL
     by_contra! h
-    exact h.not_le (h₂ a' b' c' hL h.le)
+    exact h.not_ge (h₂ a' b' c' hL h.le)
   simp only [IsSimpleTriangle]
   by_contra! cont
   wlog hab : ¬ simpleEdges.Adj a b generalizing a b c
@@ -193,7 +193,7 @@ lemma one_implies_two (h : ∃ x y z : V, NotCollinear x y z) :
     exact ⟨adb.ne23, hcd.symm, h₁.2.2.1, this.antisymm (dist_triangle _ _ _)⟩
   replace : dist a d + dist d c + dist c a < dist a b + dist b c + dist c a := by
     linarith only [this, adb.2.2.2]
-  replace : ¬ NotCollinear a d c := fun h => (h₂ a d c h).not_lt this
+  replace : ¬ NotCollinear a d c := fun h => (h₂ a d c h).not_gt this
   simp only [notCollinear_iff, adb.ne12, hcd.symm, h₁.2.1, true_and, not_and, forall_true_left,
     ne_eq, not_forall, not_not, exists_prop, not_false_eq_true] at this
   obtain ⟨L, hL, hL'⟩ := this
@@ -314,7 +314,7 @@ lemma exists_min_dist (V : Type*) [MetricSpace V] [Finite V] :
   have : S.Nonempty := have ⟨x, y, hxy⟩ := exists_pair_ne V; ⟨(x, y), by simp [S, hxy]⟩
   obtain ⟨⟨x, y⟩, (hxy : x ≠ y), h⟩ := S.toFinite.exists_minimalFor (Function.uncurry dist) _ this
   simp only [Set.mem_compl_iff, Set.mem_diagonal_iff, Function.uncurry_apply_pair, Prod.forall] at h
-  exact ⟨dist x y, by simp [hxy], fun a b hab ↦ le_of_not_lt fun h' ↦ h'.not_le (h _ _ hab h'.le)⟩
+  exact ⟨dist x y, by simp [hxy], fun a b hab ↦ le_of_not_gt fun h' ↦ h'.not_ge (h _ _ hab h'.le)⟩
 
 lemma length_mul_le_pathLength_add {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ x y : V, x ≠ y → r ≤ dist x y) :
@@ -367,7 +367,7 @@ lemma exists_simple_split_right {a b : V} (hab : a ≠ b) (hab' : ¬ simpleEdges
   let S : Set V := setOf (sbtw a · b)
   obtain ⟨c, hc : sbtw _ c _, hcmin⟩ := S.toFinite.exists_minimalFor (dist b) _ ⟨c', hc'⟩
   refine ⟨c, hc, hc.ne23, fun c' hc' => ?_⟩
-  have : dist b c ≤ dist b c' := le_of_not_lt fun h => h.not_le <| hcmin (hc.trans_right' hc') h.le
+  have : dist b c ≤ dist b c' := le_of_not_gt fun h => h.not_ge <| hcmin (hc.trans_right' hc') h.le
   rw [dist_comm b, dist_comm b] at this
   have : dist c c' ≤ 0 := by linarith [hc'.dist]
   simp only [dist_le_zero] at this
@@ -551,7 +551,7 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
   replace hmin : ∀ a' b' c' : V, IsSimpleTriangle a' b' c' → Delta a b c ≤ Delta a' b' c' := by
     intro a' b' c' h
     by_contra! h'
-    exact h'.not_le (hmin (j := (a', b', c')) h h'.le)
+    exact h'.not_ge (hmin (j := (a', b', c')) h h'.le)
   refine ⟨a, c, habc.2.2.1.1.symm, ?_⟩
   by_contra! h3
   obtain ⟨d, hd, hd'⟩ := exists_third habc.2.2.1.1.symm h3
@@ -574,7 +574,7 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
   replace hdmin : ∀ d', sbtw a c d' → dist c d ≤ dist c d' := by
     intro d' hd'
     by_contra! hd''
-    exact hd''.not_le (hdmin hd' hd''.le)
+    exact hd''.not_ge (hdmin hd' hd''.le)
   have hcd : simpleEdges.Adj c d := by
     use hd.2.2.1
     intro e he
@@ -592,7 +592,7 @@ lemma two_implies_three (h : ∃ x y z : V, IsSimpleTriangle x y z) :
   replace hPmin : ∀ P' : List V, P'.Special a b d → P.pathLength ≤ P'.pathLength := by
     intro P' hP'
     by_contra! h
-    exact h.not_le (hPmin hP' h.le)
+    exact h.not_ge (hPmin hP' h.le)
   match P with
   | (a₁ :: a₂ :: a₃ :: l) =>
     simp only [List.Special] at hP

@@ -131,7 +131,7 @@ def ψ : List (Fin 3 → Fin 2 → Fin 4) :=
   ![![3, 3], ![1, 3], ![2, 3]],
   ![![3, 3], ![3, 1], ![3, 2]]]
 
-def index (x : Fin 2 → Fin 4) : Fin 16 := 4 * x 0 + x 1
+def index (x : Fin 2 → Fin 4) : Fin 16 := ⟨4 * (x 0).val + (x 1).val, by omega⟩
 
 def u : Fin 3 → Fin 16 → ℤ :=
   ![![-10, -10, 10, 10, -10, -8,   7,  1, -5, -6,   9, 10, -3, -8,  8,  9],

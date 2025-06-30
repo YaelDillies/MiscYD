@@ -123,7 +123,7 @@ lemma mulStab_union (hs₁ : (s ∩ a • C.mulStab).Nonempty) (ht₁ : (t ∩ b
   have hxysub : (x * y) • C.mulStab ⊆ s ∩ a • C.mulStab * (t ∩ b • C.mulStab) :=
     hxyC.left_le_of_le_sup_left (hxyCsubC.trans <| subset_union_left.trans hx.subset')
   suffices s ∩ a • C.mulStab * (t ∩ b • C.mulStab) ⊂ (a * b) • C.mulStab by
-    have := (card_le_card hxysub).not_lt ((card_lt_card this).trans_eq ?_)
+    have := (card_le_card hxysub).not_gt ((card_lt_card this).trans_eq ?_)
     cases this
     simp_rw [card_smul_finset]
   apply ssubset_of_subset_not_subset
@@ -361,7 +361,7 @@ theorem mul_kneser :
   set H := C.mulStab with hH
   obtain ⟨hCst, hCcard⟩ : C ∈ convergent := argminOn_mem _ _ _
   have hCmin (D : Finset α) (hDH : D.mulStab ⊂ H) : D ∉ convergent := fun hD ↦
-    (card_lt_card hDH).not_le <| argminOn_le (fun D : Finset α => #D.mulStab) _ hD
+    (card_lt_card hDH).not_ge <| argminOn_le (fun D : Finset α => #D.mulStab) _ hD
   clear_value C
   clear convergent_nonempty
   obtain rfl | hC := C.eq_empty_or_nonempty
@@ -433,7 +433,7 @@ theorem mul_kneser :
   obtain habH | habH := eq_or_ne (a • H) (b • H)
   · simp only [← habH] at aux1₁
     rw [hH₁, hs₁, ht₁, ← habH, hH] at hH₁H
-    refine aux1₁.not_le ?_
+    refine aux1₁.not_ge ?_
     simp only [hs₁, ht₁, ← habH, inter_mul_sub_card_le (hs₁s has₁) hH₁H.subset, H]
   -- temporarily skipping deduction of inequality (2)
   set S := a • H \ (s₁ ∪ t₂) with hS
