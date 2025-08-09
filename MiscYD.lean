@@ -11,8 +11,11 @@ import MiscYD.Convexity.Ceva
 import MiscYD.Convexity.MinkowskiCaratheodory
 import MiscYD.Convexity.Refactor.Defs
 import MiscYD.Convexity.Refactor.StdSimplex
+import MiscYD.Convexity.Sperner.Sperner
 import MiscYD.Mathlib.Analysis.Convex.Combination
+import MiscYD.Mathlib.Analysis.Convex.SimplicialComplex.Basic
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
+import MiscYD.Mathlib.Data.Set.Function
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
