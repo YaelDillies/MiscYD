@@ -26,7 +26,7 @@ lemma condVar_of_ae_eq_zero_or_one (hm : m ≤ m₀) (hXmeas : AEStronglyMeasura
         simp [hXω, ← hXYω]
       _ =ᵐ[μ] μ[X | m] * μ[1 - X | m] := by
         refine .mul ?_ ?_ <;>
-          exact condExp_congr_ae <| by filter_upwards [hXY] with ω hω; simp [hω, setOf]
+          exact condExp_congr_ae <| by filter_upwards [hXY] with ω hω; simp [hω]
   calc
     _ =ᵐ[μ] μ[X ^ 2 | m] - μ[X | m] ^ 2 :=
       condVar_ae_eq_condExp_sq_sub_sq_condExp hm <| .of_bound hXmeas.aestronglyMeasurable 1 <| by

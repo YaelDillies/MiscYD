@@ -90,7 +90,7 @@ lemma mulStab_union (hs₁ : (s ∩ a • C.mulStab).Nonempty) (ht₁ : (t ∩ b
     (C ∪ s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab =
       (s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab := by
   obtain rfl | hCne := C.eq_empty_or_nonempty
-  · simp [hs₁]
+  · simp
   refine
     ((subset_inter (mulStab_mul_ssubset_mulStab hs₁ ht₁ hab).subset Subset.rfl).trans
           inter_mulStab_subset_mulStab_union).antisymm'
@@ -345,7 +345,7 @@ theorem mul_kneser :
   rw [div_mul_comm, mem_inv_smul_finset_iff, smul_eq_mul, ← mul_assoc, div_mul_div_cancel',
     div_self', one_mul] at hbac
   rw [smul_finset_nonempty] at ht
-  simp only [mul_smul_comm, smul_mul_assoc, mulStab_smul, card_smul_finset] at *
+  simp only [mul_smul_comm, mulStab_smul, card_smul_finset] at *
   have hst : (s ∩ t).Nonempty := ⟨_, mem_inter.2 ⟨ha, hc⟩⟩
   have hsts : s ∩ t ⊂ s :=
     ⟨inter_subset_left, not_subset.2 ⟨_, hb, fun h => hbac <| inter_subset_right h⟩⟩
@@ -365,11 +365,11 @@ theorem mul_kneser :
   clear_value C
   clear convergent_nonempty
   obtain rfl | hC := C.eq_empty_or_nonempty
-  · simp [hst.ne_empty, hH] at hCcard
+  · simp [hst.ne_empty] at hCcard
   -- If the stabilizer of `C` is trivial, then
   -- `#s + #t - 1 = #(s ∩ t) + #(s ∪ t) - 1 = ≤ #C ≤ #(s * t)`
   obtain hCstab | hCstab := eq_singleton_or_nontrivial (one_mem_mulStab.2 hC)
-  · simp only [hH, hCstab, card_singleton, card_mul_singleton, card_inter_add_card_union] at hCcard
+  · simp only [hCstab, card_singleton, card_mul_singleton, card_inter_add_card_union] at hCcard
     exact hCcard.trans (add_le_add_right (card_le_card hCst) _)
   exfalso
   have : ¬s * t * H ⊆ s * t := by
@@ -423,7 +423,6 @@ theorem mul_kneser :
       simpa [union_comm, mul_comm s₁ t₁] using
         disjoint_mul_sub_card_le a (ht₁t hbt₁) (disjoint_iff_inter_eq_empty.2 hs₂)
           (by rw [mul_comm]; exact hH₁H.subset)
-    simp only [union_comm t s, mul_comm t₁ s₁] at aux1₁_contr
     linarith [aux1₁, aux1₁_contr, Int.natCast_nonneg #(s₁ * (s₁ * t₁).mulStab)]
   have hC₂stab : C₂.mulStab = H₂ := mulStab_union hs₂ne ht₂ne (by rwa [mul_comm]) hCst₂
   have hH₂H : H₂ ⊂ H := mulStab_mul_ssubset_mulStab hs₂ne ht₂ne (by rwa [mul_comm])
@@ -431,8 +430,7 @@ theorem mul_kneser :
     mul_aux1 (ih _ _ hst₂) hCcard
       (not_le.1 fun h => hCmin _ (hC₂stab.trans_ssubset hH₂H) ⟨hC₂st, h⟩) hC₂stab hCst₂
   obtain habH | habH := eq_or_ne (a • H) (b • H)
-  · simp only [← habH] at aux1₁
-    rw [hH₁, hs₁, ht₁, ← habH, hH] at hH₁H
+  · rw [hH₁, hs₁, ht₁, ← habH, hH] at hH₁H
     refine aux1₁.not_ge ?_
     simp only [hs₁, ht₁, ← habH, inter_mul_sub_card_le (hs₁s has₁) hH₁H.subset, H]
   -- temporarily skipping deduction of inequality (2)

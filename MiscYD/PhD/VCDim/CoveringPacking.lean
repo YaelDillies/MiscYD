@@ -97,7 +97,7 @@ Note that HDP 4.2.3 incorrectly claims that this holds without the `ProperSpace 
 this can't be: If the conclusion holds true, then the closure of a closed ball (ie the closed
 ball itself) should be compact since it admits a finite net (its center). -/
 @[simp] lemma ecoveringNum_lt_top (hε : ε ≠ 0) : ecoveringNum ε s < ⊤ ↔ IsCompact (closure s) := by
-  simp [ecoveringNum, Finset.exists, isCompact_closure_iff_exists_finite_isNet hε]; tauto
+  simp [ecoveringNum, isCompact_closure_iff_exists_finite_isNet hε]; tauto
 
 /-- A set in a proper metric space has finite covering number iff it is relatively compact.
 
@@ -106,7 +106,7 @@ Note that HDP 4.2.3 incorrectly claims that this holds without the `ProperSpace 
 this can't be: If the conclusion holds true, then the closure of a closed ball (ie the closed
 ball itself) should be compact since it admits a finite net (its center). -/
 lemma ecoveringNum_ne_top (hε : ε ≠ 0) : ecoveringNum ε s ≠ ⊤ ↔ IsCompact (closure s) := by
-  simp [ecoveringNum, Finset.exists, isCompact_closure_iff_exists_finite_isNet hε]; tauto
+  simp [ecoveringNum, isCompact_closure_iff_exists_finite_isNet hε]; tauto
 
 /-- A set in a proper metric space has infinite covering number iff it is not relatively compact.
 

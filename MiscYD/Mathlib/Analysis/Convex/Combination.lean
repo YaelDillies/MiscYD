@@ -1,4 +1,5 @@
 import Mathlib.Analysis.Convex.Combination
+import MiscYD.Mathlib.Data.Finset.SDiff
 
 open AffineMap Finset
 
@@ -71,7 +72,7 @@ lemma lineMap_centerMass_sdiff (hi : i ∈ s) (hi₀ : w i ≠ 0) (hi₁ : w i �
     lineMap ((s \ {i}).centerMass w x) (x i) (w i) = s.centerMass w x := by
   rw [← centerMass_singleton i x hi₀, ← sum_singleton w i,
     lineMap_centerMass_centerMass] <;>
-    simp [*, union_eq_left.2, sub_eq_zero, eq_comm (b := w _)]
+    simp [*, sub_eq_zero, eq_comm (b := w _)]
 
 lemma centerMass_sdiff_of_weight_eq_zero (hi : i ∈ s) (hi₀ : w i = 0) :
     (s \ {i}).centerMass w x = s.centerMass w x := by
@@ -83,7 +84,7 @@ lemma lineMap_centerMass_sdiff_singleton_of_ne_one (hi : i ∈ s) (hi₁ : w i �
   obtain hi₀ | hi₀ := eq_or_ne (w i) 0
   · simp [centerMass_sdiff_of_weight_eq_zero hi, hi₀]
   · rw [← centerMass_singleton i x hi₀, ← sum_singleton w i, lineMap_centerMass_centerMass] <;>
-      simp [*, union_eq_left.2, sub_eq_zero, eq_comm (b := w _)]
+      simp [*, sub_eq_zero, eq_comm (b := w _)]
 
 variable [LinearOrder 𝕜] [IsStrictOrderedRing 𝕜]
 
@@ -112,5 +113,6 @@ lemma lineMap_centerMass_sdiff_singleton_of_nonneg (hi : i ∈ s) (hw₀ : ∀ j
     rotate_left 2
     · rw [← sum_eq_zero_iff_of_nonneg hw₀]
       exact em _
-    all_goals simp [*, union_eq_left.2, sub_eq_zero, eq_comm (b := w _)]
+    all_goals simp [*]
+
   · exact lineMap_centerMass_sdiff_singleton_of_ne_one hi hi₁ hw₁

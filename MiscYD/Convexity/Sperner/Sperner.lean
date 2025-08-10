@@ -6,7 +6,6 @@ Authors: Yaël Dillies, Bhavik Mehta
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Card
 import MiscYD.Mathlib.Analysis.Convex.SimplicialComplex.Basic
-import MiscYD.Mathlib.Data.Set.Function
 
 /-!
 # Sperner's lemma

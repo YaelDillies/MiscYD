@@ -17,8 +17,7 @@ inductive HasSliceRankLE : ℕ → ((∀ i, α i) → R) → Prop
   | succ ⦃n f i⦄ (g : α i → R) (h : (∀ j ≠ i, α j) → R) :
     HasSliceRankLE n f → HasSliceRankLE (n + 1) (f + (fun x ↦ g (x i) * h (fun j _ ↦ x j)))
 
-@[simp] lemma hasSliceRankLE_zero : HasSliceRankLE 0 f ↔ f = 0 := by
-  rw [hasSliceRankLE_iff]; simp [@eq_comm _ 0]
+@[simp] lemma hasSliceRankLE_zero : HasSliceRankLE 0 f ↔ f = 0 := by rw [hasSliceRankLE_iff]; simp
 
 lemma hasSliceRankLE_succ :
     HasSliceRankLE (n + 1) f ↔ ∃ f' i, ∃ (g : α i → R) (h : (∀ j ≠ i, α j) → R),
@@ -46,8 +45,7 @@ lemma hasSliceRankLE_iff_exists_sum :
   · rintro ⟨i, g, h, rfl⟩
     refine ⟨_, i 0, g 0, h 0, ⟨Fin.tail i, Fin.tail g, Fin.tail h, rfl⟩, ?_⟩
     ext x
-    simp only [ne_eq, Pi.add_apply, Finset.sum_apply, add_comm (_ * _), Fin.sum_univ_succ,
-      Fin.cons_zero, Fin.cons_succ]
+    simp only [ne_eq, Pi.add_apply, Finset.sum_apply, add_comm (_ * _), Fin.sum_univ_succ]
     congr
 
 lemma HasSliceRankLE.add (h₁ : HasSliceRankLE m f₁) :
@@ -67,5 +65,5 @@ lemma hasSliceRankLE_card [Fintype ι] [∀ i, Fintype (α i)] (f : (∀ i, α i
 lemma exists_hasSliceRankLE [Finite ι] [∀ i, Finite (α i)] (f : (∀ i, α i) → R) :
     ∃ n, HasSliceRankLE n f := by
   cases nonempty_fintype ι
-  have (i) := Fintype.ofFinite (α i)
+  have _ i := Fintype.ofFinite (α i)
   exact ⟨_, hasSliceRankLE_card _⟩

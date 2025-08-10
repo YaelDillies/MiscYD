@@ -57,7 +57,7 @@ lemma le_card_union_add_card_mulStab_union :
       mulStab (image QuotientGroup.mk t) = 1 := by
       ext x
       constructor
-      · simp only [image_nonempty, mem_one, and_imp, ← QuotientGroup.mk_one]
+      · simp only [mem_one, ← QuotientGroup.mk_one]
         intro hx
         rw [← mulStab_quotient_commute_subgroup N s, ← mulStab_quotient_commute_subgroup N t] at hx
         simp only [mem_inter, mem_image] at hx

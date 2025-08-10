@@ -119,7 +119,7 @@ lemma subset_mulStab_mul_left (ht : t.Nonempty) : s.mulStab ⊆ (s * t).mulStab 
 lemma mulStab_mul (s : Finset α) : s.mulStab * s = s := by
   obtain rfl | hs := s.eq_empty_or_nonempty
   · exact mul_empty _
-  · simp only [← coe_inj, hs, coe_mul, coe_mulStab, ← stabilizer_coe_finset, stabilizer_mul_self]
+  · simp only [← coe_inj, hs, coe_mul, coe_mulStab, stabilizer_mul_self]
 
 @[to_additive]
 lemma mul_subset_right_iff (ht : t.Nonempty) : s * t ⊆ t ↔ s ⊆ t.mulStab := by
@@ -366,7 +366,7 @@ lemma mulStab_quotient_commute_subgroup (s : Subgroup α) [DecidablePred (· ∈
   · simp
   have hti : (image (QuotientGroup.mk (s := s)) t).Nonempty := by aesop
   ext x;
-  simp only [mem_image, image_nonempty, mem_mulStab hti]
+  simp only [mem_image, mem_mulStab hti]
   constructor
   · rintro ⟨a, hax⟩
     rw [← hax.2]
@@ -380,7 +380,7 @@ lemma mulStab_quotient_commute_subgroup (s : Subgroup α) [DecidablePred (· ∈
       rw [← hbaz, QuotientGroup.mk_mul, mul_comm]
     · rintro ⟨b, hbt, hbz⟩
       rw [← hbz, ← mul_mulStab t, mul_comm]
-      use (a⁻¹ * b)
+      use a⁻¹ * b
       refine ⟨mul_mem_mul ?_ hbt, by simp⟩
       rw [← mem_coe, coe_mulStab ht]
       aesop
@@ -393,7 +393,7 @@ lemma mulStab_quotient_commute_subgroup (s : Subgroup α) [DecidablePred (· ∈
       rw [← hx, ← hyx]
       exact image_smul_comm QuotientGroup.mk y t (congrFun rfl)
     have hyz : QuotientGroup.mk z ∈ image (QuotientGroup.mk (s := s)) (y • t) := by aesop
-    simp only [QuotientGroup.mk_mul, mem_image] at hyz
+    simp only [mem_image] at hyz
     obtain ⟨a, ha, hayz⟩ := hyz
     obtain ⟨b, hbt, haby⟩ := mem_smul_finset.mp ha
     subst a

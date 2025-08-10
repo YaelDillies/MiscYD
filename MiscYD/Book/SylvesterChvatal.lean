@@ -156,7 +156,7 @@ def IsSimpleTriangle (x y z : V) : Prop :=
   simpleEdges.Adj x y ∧ simpleEdges.Adj y z ∧ simpleEdges.Adj z x ∧ NotCollinear x y z
 
 lemma IsSimpleTriangle.swap (h : IsSimpleTriangle u v w) : IsSimpleTriangle w v u :=
-⟨h.2.1.symm, h.1.symm, h.2.2.1.symm, h.2.2.2.swap⟩
+  ⟨h.2.1.symm, h.1.symm, h.2.2.1.symm, h.2.2.2.swap⟩
 
 variable [Finite V]
 
@@ -166,7 +166,7 @@ lemma one_implies_two (h : ∃ x y z : V, NotCollinear x y z) :
   have : S.Nonempty := let ⟨x, y, z, hxyz⟩ := h; ⟨(x, y, z), hxyz⟩
   let f : V × V × V → ℝ := fun ⟨a, b, c⟩ => dist a b + dist b c + dist c a
   obtain ⟨⟨a, b, c⟩, (h₁ : NotCollinear _ _ _), h₂⟩ := S.toFinite.exists_minimalFor f S this
-  simp only [Prod.forall, Set.mem_setOf_eq] at h₂
+  simp only [Prod.forall] at h₂
   replace h₂ : ∀ a' b' c' : V, NotCollinear a' b' c' →
       dist a b + dist b c + dist c a ≤ dist a' b' + dist b' c' + dist c' a' := by
     intro a' b' c' hL
@@ -194,8 +194,8 @@ lemma one_implies_two (h : ∃ x y z : V, NotCollinear x y z) :
   replace : dist a d + dist d c + dist c a < dist a b + dist b c + dist c a := by
     linarith only [this, adb.2.2.2]
   replace : ¬ NotCollinear a d c := fun h => (h₂ a d c h).not_gt this
-  simp only [notCollinear_iff, adb.ne12, hcd.symm, h₁.2.1, true_and, not_and, forall_true_left,
-    ne_eq, not_forall, not_not, exists_prop, not_false_eq_true] at this
+  simp only [notCollinear_iff, adb.ne12, hcd.symm, h₁.2.1, true_and, ne_eq, not_forall, not_not,
+    exists_prop, not_false_eq_true] at this
   obtain ⟨L, hL, hL'⟩ := this
   simp only [Set.subset_def, Set.mem_singleton_iff, Set.mem_insert_iff, forall_eq_or_imp,
     forall_eq] at hL'
@@ -313,7 +313,7 @@ lemma exists_min_dist (V : Type*) [MetricSpace V] [Finite V] :
   let S : Set (V × V) := (Set.diagonal V)ᶜ
   have : S.Nonempty := have ⟨x, y, hxy⟩ := exists_pair_ne V; ⟨(x, y), by simp [S, hxy]⟩
   obtain ⟨⟨x, y⟩, (hxy : x ≠ y), h⟩ := S.toFinite.exists_minimalFor (Function.uncurry dist) _ this
-  simp only [Set.mem_compl_iff, Set.mem_diagonal_iff, Function.uncurry_apply_pair, Prod.forall] at h
+  simp only [Function.uncurry_apply_pair, Prod.forall] at h
   exact ⟨dist x y, by simp [hxy], fun a b hab ↦ le_of_not_gt fun h' ↦ h'.not_ge (h _ _ hab h'.le)⟩
 
 lemma length_mul_le_pathLength_add {r : ℝ} (hr : 0 ≤ r)
@@ -343,8 +343,7 @@ lemma abd_special {a b c d : V} (habc : IsSimpleTriangle a b c) (hacd : sbtw a c
     (hbd : ¬ simpleEdges.Adj b d) :
     [a, b, d].Special a b d := by
   simp only [List.Special, ne_eq, List.getLast_cons, List.getLast_singleton', and_true, hbd,
-    or_true, true_and, List.nodup_cons, List.nodup_nil, List.not_mem_nil, List.mem_cons,
-    List.mem_singleton, or_false, hbd', hacd.ne13, notCollinear_iff, habc.1.ne, Set.subset_def,
+    or_true, true_and, hbd', hacd.ne13, notCollinear_iff, habc.1.ne, Set.subset_def,
     Set.mem_singleton_iff, Set.mem_insert_iff, forall_eq_or_imp, forall_eq, le_refl,
     List.chain'_cons, List.chain'_singleton, not_false_eq_true, reduceCtorEq]
   intro l hl hl'
@@ -420,9 +419,9 @@ lemma case1 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
   have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [P', ne_eq, List.chain'_cons] at hPc
-    simp only [P', List.chain'_cons, and_true, ← ha₁, hb₁₂.ne12, true_and, not_false_eq_true, ne_eq,
-      ha₃b₁₂.symm, ha₃b₂₃.symm, hPc.2.2, hP'₁.2]
+    simp only [ne_eq, List.chain'_cons] at hPc
+    simp only [P', List.chain'_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq, ha₃b₂₃.symm,
+      hPc.2.2, hP'₁.2]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
   have : IsSimpleTriangle b₁₂ a₂ b₂₃ := ⟨hba, hab, hP'ns.2.symm, hb⟩
@@ -471,9 +470,9 @@ lemma case2 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
   have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [P', ne_eq, List.chain'_cons] at hPc
-    simp only [P', List.chain'_cons, and_true, ← ha₁, true_and, not_false_eq_true, ne_eq,
-      ha₃b₂₃.symm, hPc.2.2, hP'₁.2, hP'₁.1]
+    simp only [ne_eq, List.chain'_cons] at hPc
+    simp only [P', List.chain'_cons, and_true, not_false_eq_true, ne_eq, ha₃b₂₃.symm, hPc.2.2,
+      hP'₁.1]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
   have : IsSimpleTriangle a₁ a₂ b₂₃ := ⟨c₁1, hab, hP'ns.1.symm, hb⟩
@@ -525,9 +524,9 @@ lemma case3 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
   have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [P', ne_eq, List.chain'_cons] at hPc
-    simp only [P', List.chain'_cons, and_true, ← ha₁, hb₁₂.ne12, true_and, not_false_eq_true, ne_eq,
-      ha₃b₁₂.symm, hPc.2.2, hP'₁.2]
+    simp only [ne_eq, List.chain'_cons] at hPc
+    simp only [P', List.chain'_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq, ha₃b₁₂.symm,
+      hPc.2.2]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
   have : IsSimpleTriangle b₁₂ a₂ a₃ := ⟨hba, c₁2, hP'ns.2.symm, hb⟩

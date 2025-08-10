@@ -15,7 +15,7 @@ import MiscYD.Convexity.Sperner.Sperner
 import MiscYD.Mathlib.Analysis.Convex.Combination
 import MiscYD.Mathlib.Analysis.Convex.SimplicialComplex.Basic
 import MiscYD.Mathlib.Combinatorics.SetFamily.Shatter
-import MiscYD.Mathlib.Data.Set.Function
+import MiscYD.Mathlib.Data.Finset.SDiff
 import MiscYD.Mathlib.GroupTheory.OrderOfElement
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.Combination
 import MiscYD.Mathlib.LinearAlgebra.AffineSpace.FiniteDimensional
