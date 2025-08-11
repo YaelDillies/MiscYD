@@ -29,4 +29,6 @@ import MiscYD.PhD.VCDim.HausslerPacking
 import MiscYD.PhD.VCDim.HypercubeEdges
 import MiscYD.PhD.VCDim.Net
 import MiscYD.PhD.VCDim.SmallVCImpSmallCondVar
+import MiscYD.PhD.VCDim.UnifAP.Defs
+import MiscYD.PhD.VCDim.UnifAP.Fourier
 import MiscYD.SetFamily.PosDiffs
