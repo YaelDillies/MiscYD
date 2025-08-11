@@ -1,5 +1,4 @@
 import Mathlib.Probability.CondVar
-import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 
 open MeasureTheory
 
@@ -42,7 +41,7 @@ lemma condVar_of_ae_eq_zero_or_one (hm : m ≤ m₀) (hXmeas : AEStronglyMeasura
         _ = μ[1 | m] - μ[X | m] := by simp [Pi.one_def, hm]
         _ =ᵐ[μ] μ[1 - X | m] := by
           refine (condExp_sub (integrable_const _)
-            (.of_bound 1 hXmeas.aestronglyMeasurable ?_) _).symm
+            (.of_bound (C := 1) hXmeas.aestronglyMeasurable ?_) _).symm
           filter_upwards [hX]
           rintro ω (hω | hω) <;> simp [hω]
 

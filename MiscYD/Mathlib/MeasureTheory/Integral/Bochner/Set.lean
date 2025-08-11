@@ -1,6 +1,5 @@
 import Mathlib.MeasureTheory.Integral.Bochner.Set
 import Mathlib.Probability.Notation
-import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 
 open scoped ENNReal ProbabilityTheory
 
@@ -16,17 +15,16 @@ lemma integral_eq_setIntegral (hs : ∀ᵐ a ∂μ, a ∈ s) (f : α → E) :
 end MeasureTheory
 
 namespace MeasureTheory
-variable {Ω : Type*} {m₀ m : MeasurableSpace Ω} {hm : m ≤ m₀} {X Y : Ω → ℝ} {μ : Measure[m₀] Ω}
-  {s : Set Ω}
+variable {Ω : Type*} {m : MeasurableSpace Ω} {X Y : Ω → ℝ} {μ : Measure Ω} {s : Set Ω}
 
 /-- **Expectation of a Bernoulli random variable**.
 
 If a random variable is ae equal to `0` or `1`, then its expectation is equal to the probability
 that it equals `1`. -/
-lemma integral_of_ae_eq_zero_or_one [IsFiniteMeasure μ] (hXmeas : AEStronglyMeasurable[m₀] X μ)
+lemma integral_of_ae_eq_zero_or_one [IsFiniteMeasure μ] (hXmeas : AEStronglyMeasurable X μ)
     (hX : ∀ᵐ ω ∂μ, X ω = 0 ∨ X ω = 1) : μ[X] = (μ {ω | X ω = 1}).toReal := by
   wlog hXmeas : StronglyMeasurable X
-  · obtain ⟨Y, hYmeas, hXY⟩ := ‹AEStronglyMeasurable[m₀] X μ›
+  · obtain ⟨Y, hYmeas, hXY⟩ := ‹AEStronglyMeasurable X μ›
     calc
       μ[X]
       _ = μ[Y] := (integral_congr_ae hXY:)
@@ -58,11 +56,11 @@ lemma integral_of_ae_eq_zero_or_one [IsFiniteMeasure μ] (hXmeas : AEStronglyMea
 If a random variable is ae equal to `0` or `1`, then one minus its expectation is equal to the
 probability that it equals `0`. -/
 lemma one_sub_integral_of_ae_eq_zero_or_one [IsProbabilityMeasure μ]
-    (hXmeas : AEStronglyMeasurable[m₀] X μ) (hX : ∀ᵐ ω ∂μ, X ω = 0 ∨ X ω = 1) :
+    (hXmeas : AEStronglyMeasurable X μ) (hX : ∀ᵐ ω ∂μ, X ω = 0 ∨ X ω = 1) :
     1 - μ[X] = (μ {ω | X ω = 0}).toReal := by
   calc
     _ = μ[1 - X] := by
-      rw [integral_sub' _ <| .of_bound 1 hXmeas ?_]
+      rw [integral_sub' _ <| .of_bound hXmeas 1 ?_]
       · simp
       · exact integrable_const _
       · filter_upwards [hX]

@@ -1,5 +1,4 @@
 import Mathlib.Probability.Moments.Variance
-import MiscYD.Mathlib.MeasureTheory.Integral.IntegrableOn
 import MiscYD.Mathlib.MeasureTheory.Integral.Bochner.Set
 
 /-!
@@ -13,33 +12,10 @@ open MeasureTheory
 namespace ProbabilityTheory
 variable {Ω : Type*} {m : MeasurableSpace Ω} {X Y : Ω → ℝ} {μ : Measure Ω} {s : Set Ω}
 
-lemma evariance_congr_ae (hXY : X =ᵐ[μ] Y) : eVar[X ; μ] = eVar[Y ; μ] := by
-  refine lintegral_congr_ae ?_
-  filter_upwards [hXY] with ω hω
-  simp [hω, integral_congr_ae hXY]
-
-lemma variance_congr_ae (hXY : X =ᵐ[μ] Y) : Var[X ; μ] = Var[Y ; μ] := by
-  simp [variance, evariance_congr_ae hXY]
-
 @[simp] lemma evariance_zero_measure : eVar[X ; (0 : Measure[m] Ω)] = 0 := by simp [evariance]
 @[simp] lemma variance_zero_measure : Var[X ; (0 : Measure[m] Ω)] = 0 := by simp [variance]
 
 variable [IsZeroOrProbabilityMeasure μ]
-
--- TODO: Replace `variance_def'`
-lemma variance_eq_integral_sq_sub_sq_integral (hX : MemLp X 2 μ) :
-    variance X μ = μ[X ^ 2] - μ[X] ^ 2 := by
-  obtain rfl | hμ := eq_zero_or_isProbabilityMeasure μ
-  · simp
-  simp only [variance_eq_integral hX.aestronglyMeasurable.aemeasurable, sub_sq']
-  rw [integral_sub, integral_add]; rotate_left
-  · exact hX.integrable_sq
-  · apply integrable_const
-  · apply hX.integrable_sq.add
-    apply integrable_const
-  · exact ((hX.integrable one_le_two).const_mul 2).mul_const' _
-  · simp [integral_mul_const, integral_const_mul, Measure.real]
-    ring
 
 /-- **Variance of a Bernoulli random variable**.
 
@@ -52,7 +28,7 @@ lemma variance_of_ae_eq_zero_or_one (hXmeas : AEStronglyMeasurable X μ)
   · obtain ⟨Y, hYmeas, hXY⟩ := ‹AEStronglyMeasurable X μ›
     calc
       Var[X ; μ]
-      _ = Var[Y ; μ] := variance_congr_ae hXY
+      _ = Var[Y ; μ] := variance_congr hXY
       _ = (μ {ω | Y ω = 0}).toReal * (μ {ω | Y ω = 1}).toReal := by
         refine this hYmeas.aestronglyMeasurable ?_ hYmeas
         filter_upwards [hX, hXY] with ω hXω hXYω
@@ -62,8 +38,7 @@ lemma variance_of_ae_eq_zero_or_one (hXmeas : AEStronglyMeasurable X μ)
   obtain rfl | hμ := eq_zero_or_isProbabilityMeasure μ
   · simp
   calc
-    _ = μ[X ^ 2] - μ[X] ^ 2 :=
-      variance_eq_integral_sq_sub_sq_integral <| .of_bound hXmeas.aestronglyMeasurable 1 <| by
+    _ = μ[X ^ 2] - μ[X] ^ 2 := variance_eq_sub <| .of_bound hXmeas.aestronglyMeasurable 1 <| by
         filter_upwards [hX]; rintro ω (hω | hω) <;> simp [hω]
     _ = μ[X] - μ[X] ^ 2 := by
       congr! 1

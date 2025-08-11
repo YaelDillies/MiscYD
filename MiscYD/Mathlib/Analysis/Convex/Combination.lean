@@ -1,5 +1,4 @@
 import Mathlib.Analysis.Convex.Combination
-import MiscYD.Mathlib.Data.Finset.SDiff
 
 open AffineMap Finset
 
@@ -27,6 +26,7 @@ end oldVars
 variable {ι 𝕜 V : Type*} [Field 𝕜] [AddCommGroup V]
   [Module 𝕜 V] {s t : Finset ι} {v w : ι → 𝕜} {x y : ι → V} {i : ι}
 
+@[congr]
 lemma centerMass_congr (hst : s = t) (hvw : ∀ i ∈ t, v i = w i) (hxy : ∀ i ∈ t, x i = y i) :
     s.centerMass v x = t.centerMass w y := by
   unfold centerMass; rw [sum_congr hst hvw, sum_congr hst fun i hi ↦ by rw [hvw i hi, hxy i hi]]
@@ -114,5 +114,4 @@ lemma lineMap_centerMass_sdiff_singleton_of_nonneg (hi : i ∈ s) (hw₀ : ∀ j
     · rw [← sum_eq_zero_iff_of_nonneg hw₀]
       exact em _
     all_goals simp [*]
-
   · exact lineMap_centerMass_sdiff_singleton_of_ne_one hi hi₁ hw₁
