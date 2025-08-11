@@ -25,6 +25,7 @@ import MiscYD.Mathlib.MeasureTheory.MeasurableSpace.Basic
 import MiscYD.Mathlib.Probability.CondVar
 import MiscYD.Mathlib.Probability.Moments.Variance
 import MiscYD.PhD.VCDim.AddVCDim
+import MiscYD.PhD.VCDim.Convex
 import MiscYD.PhD.VCDim.CoveringPacking
 import MiscYD.PhD.VCDim.HausslerPacking
 import MiscYD.PhD.VCDim.HypercubeEdges
