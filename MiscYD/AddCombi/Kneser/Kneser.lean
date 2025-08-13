@@ -279,8 +279,8 @@ variable (s t)
 
 /-- **Kneser's multiplication theorem**: A lower bound on the size of `s * t` in terms of its
 stabilizer. -/
-@[to_additive "**Kneser's addition theorem**: A lower bound on the size of `s + t` in terms of its
-stabilizer."]
+@[to_additive /-- **Kneser's addition theorem**: A lower bound on the size of `s + t` in terms of
+its stabilizer. -/]
 theorem mul_kneser :
     #(s * (s * t).mulStab) + #(t * (s * t).mulStab)
       ≤ #(s * t) + #(s * t).mulStab := by
@@ -527,8 +527,8 @@ theorem mul_kneser :
 
 /-- The strict version of **Kneser's multiplication theorem**. If the LHS of `Finset.mul_kneser`
 does not equal the RHS, then it is in fact much smaller. -/
-@[to_additive "The strict version of **Kneser's addition theorem**. If the LHS of
-`Finset.add_kneser` does not equal the RHS, then it is in fact much smaller."]
+@[to_additive /-- The strict version of **Kneser's addition theorem**. If the LHS of
+`Finset.add_kneser` does not equal the RHS, then it is in fact much smaller. -/]
 lemma mul_strict_kneser (h : #(s * (s * t).mulStab) + #(t * (s * t).mulStab) <
       #(s * t) + #(s * t).mulStab) :
     #(s * (s * t).mulStab) + #(t * (s * t).mulStab) ≤ #(s * t) :=

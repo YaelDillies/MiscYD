@@ -16,8 +16,8 @@ if the inequality is strict, then we in fact have `|s + H| + |t + H| ≤ |s + t|
 
 ## Main declarations
 
-* `finset.mul_kneser`: Kneser's lemma.
-* `finset.mul_strict_kneser`: Strict Kneser lemma.
+* `Finset.mul_kneser`: Kneser's lemma.
+* `Finset.mul_strict_kneser`: Strict Kneser lemma.
 
 ## References
 
@@ -239,8 +239,8 @@ lemma le_card_mul_add_card_mulStab_mul (hs : s.Nonempty) (ht : t.Nonempty) :
 
 /-- **Kneser's multiplication lemma**: A lower bound on the size of `s * t` in terms of its
 stabilizer. -/
-@[to_additive "**Kneser's addition lemma**: A lower bound on the size of `s + t` in terms of its
-stabilizer."]
+@[to_additive /-- **Kneser's addition lemma**: A lower bound on the size of `s + t` in terms of its
+stabilizer. -/]
 lemma mul_kneser' (s t : Finset α) :
     #(s * (s * t).mulStab) + #(t * (s * t).mulStab) ≤ #(s * t) + #(s * t).mulStab := by
   -- The cases `s = ∅` and `t = ∅` are easily taken care of.
@@ -254,8 +254,8 @@ lemma mul_kneser' (s t : Finset α) :
 
 /-- The strict version of **Kneser's multiplication theorem**. If the LHS of `Finset.mul_kneser`
 does not equal the RHS, then it is in fact much smaller. -/
-@[to_additive "The strict version of **Kneser's addition theorem**. If the LHS of
-`Finset.add_kneser` does not equal the RHS, then it is in fact much smaller."]
+@[to_additive /-- The strict version of **Kneser's addition theorem**. If the LHS of
+`Finset.add_kneser` does not equal the RHS, then it is in fact much smaller. -/]
 lemma mul_strict_kneser'
     (h : #(s * (s * t).mulStab) + #(t * (s * t).mulStab) < #(s * t) + #(s * t).mulStab) :
     #(s * (s * t).mulStab) + #(t * (s * t).mulStab) ≤ #(s * t) :=

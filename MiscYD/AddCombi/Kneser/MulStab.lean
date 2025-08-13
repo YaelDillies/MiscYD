@@ -35,7 +35,7 @@ instance (s : Finset α) : DecidablePred (· ∈ stabilizer α s.toSet) :=
   fun a ↦ decidable_of_iff (a ∈ stabilizer α s) (by simp)
 
 /-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`.-/
-@[to_additive "The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`."]
+@[to_additive /-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`. -/]
 def mulStab (s : Finset α) : Finset α := {a ∈ s / s | a • s = s}
 
 @[to_additive (attr := simp)]
@@ -258,7 +258,7 @@ lemma card_mulStab_le_card : #s.mulStab ≤ #s := by
 
 /-- A fintype instance for the stabilizer of a nonempty finset `s` in terms of `s.mulStab`. -/
 @[to_additive
-"A fintype instance for the stabilizer of a nonempty finset `s` in terms of `s.addStab`."]
+/-- A fintype instance for the stabilizer of a nonempty finset `s` in terms of `s.addStab`. -/]
 private def fintypeStabilizerOfMulStab (hs : s.Nonempty) : Fintype (stabilizer α s) where
   elems := s.mulStab.attach.map
     ⟨Subtype.map id fun _ ↦ (mem_mulStab hs).1, Subtype.map_injective _ injective_id⟩
@@ -284,7 +284,7 @@ lemma card_mulStab_dvd_card_mulStab (hs : s.Nonempty) (h : s.mulStab ⊆ t.mulSt
     simp
 
 /-- A version of Lagrange's theorem. -/
-@[to_additive "A version of Lagrange's theorem."]
+@[to_additive /-- A version of Lagrange's theorem. -/]
 lemma card_mulStab_mul_card_image_coe' (s t : Finset α) [DecidableEq (α ⧸ stabilizer α t.toSet)] :
     #t.mulStab * #(s +ₛ stabilizer α t.toSet) = #(s * t.mulStab) := by
   obtain rfl | ht := t.eq_empty_or_nonempty
@@ -313,7 +313,7 @@ lemma card_mul_card_eq_mulStab_card_mul_coe (s t : Finset α) :
   simpa [-coe_mul] using Fintype.card_congr temp
 
 /-- A version of Lagrange's theorem. -/
-@[to_additive "A version of Lagrange's theorem."]
+@[to_additive /-- A version of Lagrange's theorem. -/]
 lemma card_mulStab_mul_card_image_coe (s t : Finset α) :
     #(s * t).mulStab * #((s +ₛ stabilizer α (s * t).toSet) * (t +ₛ stabilizer α (s * t).toSet)) =
       #(s * t) := by

@@ -48,7 +48,7 @@ lemma IsLinftyAP.mul_fun (hfbdd : ∀ x, ‖f x‖ ≤ C) (hgbdd : ∀ x, ‖g x
         ‖f (x + t) * g (x + t) - f x * g x‖
     _ = ‖g x * (f (x + t) - f x) + f (x + t) * (g (x + t) - g x)‖ := by ring_nf
     _ ≤ ‖g x * (f (x + t) - f x)‖ + ‖f (x + t) * (g (x + t) - g x)‖ := norm_add_le ..
-    _ = ‖g x‖ * ‖f (x + t) - f x‖ + ‖f (x + t)‖ * ‖g (x + t) - g x‖ := by simp [norm_mul]
+    _ = ‖g x‖ * ‖f (x + t) - f x‖ + ‖f (x + t)‖ * ‖g (x + t) - g x‖ := by simp
     _ ≤ D * ε + C * δ := by gcongr <;> exact (norm_nonneg _).trans ‹_›
 
 variable (f) in
