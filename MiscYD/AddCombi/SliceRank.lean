@@ -32,8 +32,9 @@ lemma hasSliceRankLE_one :
 lemma hasSliceRankLE_iff_exists_sum :
     HasSliceRankLE n f ↔ ∃ (i : Fin n → ι) (g : ∀ k, α (i k) → R) (h : ∀ k, (∀ j ≠ i k, α j) → R),
       f = ∑ k, fun x ↦ g k (x (i k)) * h k fun j _ ↦ x j := by
-  induction' n with n ih generalizing f
-  · simp
+  induction n generalizing f with
+  | zero => simp
+  | succ n ih =>
   simp_rw [hasSliceRankLE_succ, ih]
   constructor
   · rintro ⟨f', iₙ, gₙ, hₙ, ⟨i, g, h, rfl⟩, rfl⟩

@@ -191,8 +191,9 @@ lemma le_card_union_add_card_mulStab_union :
 lemma le_card_sup_add_card_mulStab_sup {ι : Type*} {s : Finset ι} {f : ι → Finset α}
     (hs : s.Nonempty) :
     s.inf' hs (fun i ↦ #(f i) + #(f i).mulStab) ≤ #(s.sup f) + #(s.sup f).mulStab := by
-  induction' s using Finset.cons_induction with i s hi ih
-  · cases not_nonempty_empty hs
+  induction s using Finset.cons_induction with
+  | empty => cases not_nonempty_empty hs
+  | cons i s hi ih =>
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp
   simp only [hs, inf'_cons, sup_cons, sup_eq_union]

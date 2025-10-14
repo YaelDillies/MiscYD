@@ -17,21 +17,20 @@ lemma affineCombination_mem_affineSpan' [Nontrivial k] (h : ∑ i ∈ s, w i = 1
     (hp : ∀ i ∈ s, p i ∈ t) : s.affineCombination k p w ∈ affineSpan k t := by
   classical
   have hnz : ∑ i ∈ s, w i ≠ 0 := h.symm ▸ one_ne_zero
-  have hn : s.Nonempty := Finset.nonempty_of_sum_ne_zero hnz
-  cases' hn with i1 hi1
-  let w1 : ι → k := Function.update (Function.const ι 0) i1 1
+  obtain ⟨i₀, hi₀⟩ : s.Nonempty := Finset.nonempty_of_sum_ne_zero hnz
+  let w1 : ι → k := Function.update (Function.const ι 0) i₀ 1
   have hw1 : ∑ i ∈ s, w1 i = 1 := by
-    simp only [w1, Function.const_zero, Finset.sum_update_of_mem hi1, Pi.zero_apply,
+    simp only [w1, Function.const_zero, Finset.sum_update_of_mem hi₀, Pi.zero_apply,
         Finset.sum_const_zero, add_zero]
-  have hw1s : s.affineCombination k p w1 = p i1 :=
-    s.affineCombination_of_eq_one_of_eq_zero w1 p hi1 (Function.update_self ..) fun _ _ hne =>
+  have hw1s : s.affineCombination k p w1 = p i₀ :=
+    s.affineCombination_of_eq_one_of_eq_zero w1 p hi₀ (Function.update_self ..) fun _ _ hne =>
       Function.update_of_ne hne ..
-  have hv : s.affineCombination k p w -ᵥ p i1 ∈ (affineSpan k t).direction := by
+  have hv : s.affineCombination k p w -ᵥ p i₀ ∈ (affineSpan k t).direction := by
     rw [direction_affineSpan, ← hw1s, Finset.affineCombination_vsub]
     apply weightedVSub_mem_vectorSpan' _ hp
     simp [Pi.sub_apply, h, hw1]
-  rw [← vsub_vadd (s.affineCombination k p w) (p i1)]
-  exact AffineSubspace.vadd_mem_of_mem_direction hv (mem_affineSpan k <| hp _ hi1)
+  rw [← vsub_vadd (s.affineCombination k p w) (p i₀)]
+  exact AffineSubspace.vadd_mem_of_mem_direction hv (mem_affineSpan k <| hp _ hi₀)
 
 lemma mem_affineSpan_image [Nontrivial k] :
     p₀ ∈ affineSpan k (p '' s) ↔

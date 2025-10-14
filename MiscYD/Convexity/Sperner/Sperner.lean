@@ -4,6 +4,7 @@ Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies, Bhavik Mehta
 -/
 import Mathlib.Analysis.Convex.SimplicialComplex.Basic
+import Mathlib.Analysis.Convex.StdSimplex
 import Mathlib.Data.Real.Basic
 import Mathlib.Data.Set.Card
 

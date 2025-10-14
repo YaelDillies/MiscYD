@@ -3,8 +3,8 @@ Copyright (c) 2025 Yaël Dillies. All rights reserved.
 Released under Apache 2.0 license as described in the file LICENSE.
 Authors: Yaël Dillies
 -/
+import Mathlib.Analysis.Complex.Exponential
 import Mathlib.Analysis.Normed.Lp.WithLp
-import Mathlib.Data.Complex.Exponential
 import MiscYD.PhD.VCDim.SmallVCImpSmallCondVar
 
 /-!

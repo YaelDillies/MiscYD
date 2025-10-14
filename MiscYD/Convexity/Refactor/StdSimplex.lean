@@ -1,5 +1,4 @@
 import Mathlib.Algebra.Module.BigOperators
-import Mathlib.Algebra.Order.Module.OrderedSMul
 import Mathlib.Data.Countable.Small
 import Mathlib.Data.Finsupp.Order
 
@@ -114,8 +113,8 @@ lemma mapDomain_comp (f : ι → κ) (g : κ → μ) (w : StdSimplex ι R) :
 lemma domCongr_eq_mapDomain (e : ι ≃ κ) (w : StdSimplex ι R) : domCongr e w = mapDomain e w := by
   ext j
   simp [Finsupp.mapDomain, Finsupp.sum]
-  rw [sum_eq_single (e.symm j) fun i _ hij ↦ Finsupp.single_eq_of_ne (e.eq_symm_apply.ne.1 hij)]
-    <;> simp
+  rw [sum_eq_single (e.symm j)] <;> simp
+  exact fun i _ hij ↦ Finsupp.single_eq_of_ne (e.eq_symm_apply.ne.1 hij).symm
 
 lemma mapDomain_domCongr (f : ι → κ) (e : ι ≃ μ) (w : StdSimplex ι R) :
     mapDomain (f ∘ e.symm) (domCongr e w) = mapDomain f w := by
@@ -129,7 +128,7 @@ end mapDomain
 
 section sigma
 variable {ι' S : Type*} {κ : ι → Type*} {κ' : ι' → Type*} [Semiring S] [PartialOrder S]
-  [IsOrderedRing S] [Module R S] [NoZeroSMulDivisors R S] [OrderedSMul R S]
+  [IsOrderedRing S] [Module R S] [NoZeroSMulDivisors R S] [IsOrderedModule R S]
 
 @[simps! -fullyApplied, simps! apply toFinsupp]
 def sigma (w : StdSimplex ι R) (w' : ∀ i, StdSimplex (κ i) S) : StdSimplex (Σ i, κ i) S where

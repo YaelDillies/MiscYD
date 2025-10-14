@@ -288,7 +288,7 @@ theorem mul_kneser :
   -- in Lean.
   set n : ℕ := #(s * t) + #s with hn
   clear_value n
-  induction' n using Nat.strong_induction_on with n ih generalizing α
+  induction n using Nat.strong_induction_on generalizing α with | h n ih =>
   subst hn
   -- The cases `s = ∅` and `t = ∅` are easily taken care of.
   obtain rfl | hs := s.eq_empty_or_nonempty

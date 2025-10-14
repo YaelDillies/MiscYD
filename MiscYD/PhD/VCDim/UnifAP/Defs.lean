@@ -84,4 +84,3 @@ lemma IsUnifAlmostPeriodic.mul (hf : IsUnifAlmostPeriodic f) (hg : IsUnifAlmostP
   dsimp
   convert htf.mul_fun hC hD htg
   field_simp
-  ring
