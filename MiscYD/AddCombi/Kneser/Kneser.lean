@@ -179,7 +179,7 @@ lemma disjoint_mul_sub_card_le {a : α} (b : α) {s t C : Finset α} (has : a �
           #(s ∩ a • C.mulStab * (s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab) =
         #(a • C.mulStab \
             (s ∩ a • C.mulStab * (s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab)) := by
-      rw [card_sdiff
+      rw [card_sdiff_of_subset
           (subset_trans (mul_subset_mul_left hst)
             (subset_trans (mul_subset_mul_right inter_subset_right) _)),
         card_smul_finset, Int.ofNat_sub]
@@ -191,10 +191,10 @@ lemma disjoint_mul_sub_card_le {a : α} (b : α) {s t C : Finset α} (has : a �
       · simp only [smul_mul_assoc, mulStab_mul_mulStab, Subset.rfl]
     _ ≤ #((s ∪ t) * C.mulStab) -
           #((s ∪ t) * (s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab) := by
-      rw [← Int.ofNat_sub (card_le_card (mul_subset_mul_left hst)), ←
-        card_sdiff (mul_subset_mul_left hst)]
+      rw [← Int.ofNat_sub (card_le_card (mul_subset_mul_left hst)),
+        ← card_sdiff_of_subset (mul_subset_mul_left hst)]
       norm_cast
-      apply card_le_card
+      gcongr #?_
       refine fun x hx => mem_sdiff.mpr ⟨?_, ?_⟩
       · apply smul_finset_subset_smul (mem_union_left t has) (mem_sdiff.mp hx).1
       have hx' := (mem_sdiff.mp hx).2
@@ -231,7 +231,7 @@ lemma inter_mul_sub_card_le {a : α} {s t C : Finset α} (has : a ∈ s)
         #(a • C.mulStab \
             ((s ∩ a • C.mulStab ∪ t ∩ a • C.mulStab) *
               (s ∩ a • C.mulStab * (t ∩ a • C.mulStab)).mulStab)) := by
-      rw [card_sdiff, Int.ofNat_sub (card_le_card _), card_smul_finset]
+      rw [card_sdiff_of_subset, Int.ofNat_sub (card_le_card _), card_smul_finset]
       · rw [union_mul, le_sub_iff_add_le]
         refine le_trans (add_le_add_left (Int.ofNat_le.mpr <| card_union_le _ _) _) ?_
         norm_num
@@ -243,7 +243,7 @@ lemma inter_mul_sub_card_le {a : α} {s t C : Finset α} (has : a ∈ s)
     _ ≤ #((s ∪ t) * C.mulStab) -
           #((s ∪ t) * (s ∩ a • C.mulStab * (t ∩ a • C.mulStab)).mulStab) := by
       rw [← Int.ofNat_sub (card_le_card (mul_subset_mul_left hst)),
-        ← card_sdiff (mul_subset_mul_left hst)]
+        ← card_sdiff_of_subset (mul_subset_mul_left hst)]
       norm_cast
       apply card_le_card
       refine fun x hx => mem_sdiff.mpr ⟨?_, ?_⟩
@@ -269,7 +269,7 @@ private lemma card_mul_add_card_lt (hC : C.Nonempty) (hs : s' ⊆ s) (ht : t' �
     #(s' * t') + #s' < #(s * t) + #s :=
   add_lt_add_of_lt_of_le
       (by
-        rw [← tsub_pos_iff_lt, ← card_sdiff (mul_subset_mul hs ht), card_pos]
+        rw [← tsub_pos_iff_lt, ← card_sdiff_of_subset (mul_subset_mul hs ht), card_pos]
         exact hC.mono (subset_sdiff.2 ⟨hCst, hCst'⟩)) <|
     card_le_card hs
 

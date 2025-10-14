@@ -295,7 +295,7 @@ def List.Special (a b d : V) : List V → Prop
   | (a1 :: a2 :: a3 :: l) => a1 = a ∧ NotCollinear a1 a2 a3 ∧
       (¬ simpleEdges.Adj a1 a2 ∨ ¬ simpleEdges.Adj a2 a3) ∧
       List.getLast (a1 :: a2 :: a3 :: l) (by simp) = d ∧
-      (a1 :: a2 :: a3 :: l).Chain' (· ≠ ·) ∧
+      (a1 :: a2 :: a3 :: l).IsChain (· ≠ ·) ∧
       (a1 :: a2 :: a3 :: l).pathLength ≤ [a, b, d].pathLength
 
 lemma List.Special.pathLength_le {a b d : V} :
@@ -303,7 +303,7 @@ lemma List.Special.pathLength_le {a b d : V} :
   | _ :: _ :: _ :: _, ⟨_, _, _, _, _, h⟩ => h
 
 lemma List.Special.chain_ne {a b d : V} :
-    ∀ {P : List V}, P.Special a b d → P.Chain' (· ≠ ·)
+    ∀ {P : List V}, P.Special a b d → P.IsChain (· ≠ ·)
   | _ :: _ :: _ :: _, ⟨_, _, _, _, h, _⟩ => h
 
 lemma exists_min_dist (V : Type*) [MetricSpace V] [Finite V] :
@@ -318,18 +318,18 @@ lemma exists_min_dist (V : Type*) [MetricSpace V] [Finite V] :
 
 lemma length_mul_le_pathLength_add {r : ℝ} (hr : 0 ≤ r)
     (h : ∀ x y : V, x ≠ y → r ≤ dist x y) :
-    {l : List V} → l.Chain' (· ≠ ·) → l.length * r ≤ l.pathLength + r
+    {l : List V} → l.IsChain (· ≠ ·) → l.length * r ≤ l.pathLength + r
   | [], _ => by simp [List.pathLength, hr]
   | [_], _ => by simp [List.pathLength]
   | x :: y :: xs, h' => by
-      simp only [List.chain'_cons_cons] at h'
+      simp only [List.isChain_cons_cons] at h'
       rw [List.pathLength, List.length, Nat.cast_add_one, add_one_mul (α := ℝ), add_assoc,
         add_comm]
       exact add_le_add (h _ _ h'.1) (length_mul_le_pathLength_add hr h h'.2)
 
 lemma uniformly_bounded_of_chain_ne_of_pathLength_le (V : Type*) [MetricSpace V] [Finite V]
     (R : ℝ) :
-    ∃ n : ℕ, ∀ l : List V, l.Chain' (· ≠ ·) → l.pathLength ≤ R → l.length ≤ n := by
+    ∃ n : ℕ, ∀ l : List V, l.IsChain (· ≠ ·) → l.pathLength ≤ R → l.length ≤ n := by
   have ⟨r, hr, hr'⟩ := exists_min_dist V
   refine ⟨⌊R / r + 1⌋₊, ?_⟩
   intro l hl hl'
@@ -345,7 +345,7 @@ lemma abd_special {a b c d : V} (habc : IsSimpleTriangle a b c) (hacd : sbtw a c
   simp only [List.Special, ne_eq, List.getLast_cons, List.getLast_singleton', and_true, hbd,
     or_true, true_and, hbd', hacd.ne13, notCollinear_iff, habc.1.ne, Set.subset_def,
     Set.mem_singleton_iff, Set.mem_insert_iff, forall_eq_or_imp, forall_eq, le_refl,
-    List.chain'_cons_cons, List.chain'_singleton, not_false_eq_true, reduceCtorEq]
+    List.isChain_cons_cons, List.isChain_singleton, not_false_eq_true, reduceCtorEq]
   intro l hl hl'
   exact habc.2.2.2.2.2.2 l hl <| by simp [*, hl.close_middle hl'.1 hl'.2.2 hacd]
 
@@ -384,7 +384,7 @@ lemma case1 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
     (hPmin : ∀ P' : List V, P'.Special a b d → (a₁ :: a₂ :: a₃ :: l).pathLength ≤ P'.pathLength)
     (ha₁ : a₁ = a) (hα : NotCollinear a₁ a₂ a₃)
     (hPd : List.getLast (a₁ :: a₂ :: a₃ :: l) (by simp) = d)
-    (hPc : (a₁ :: a₂ :: a₃ :: l).Chain' (· ≠ ·))
+    (hPc : (a₁ :: a₂ :: a₃ :: l).IsChain (· ≠ ·))
     (c₁1 : ¬ simpleEdges.Adj a₁ a₂)
     (c₁2 : ¬ simpleEdges.Adj a₂ a₃) :
     False := by
@@ -418,9 +418,9 @@ lemma case1 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
     simp [right_extend_mem_Line hb₁₂]
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
-  have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [ne_eq, List.chain'_cons_cons] at hPc
-    simp only [P', List.chain'_cons_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq,
+  have hP'₃ : P'.IsChain (· ≠ ·) := by
+    simp only [ne_eq, List.isChain_cons_cons] at hPc
+    simp only [P', List.isChain_cons_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq,
       ha₃b₂₃.symm, hPc.2.2, hP'₁.2]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
@@ -442,7 +442,7 @@ lemma case2 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
     (hPmin : ∀ P' : List V, P'.Special a b d → (a₁ :: a₂ :: a₃ :: l).pathLength ≤ P'.pathLength)
     (ha₁ : a₁ = a) (hα : NotCollinear a₁ a₂ a₃)
     (hPd : List.getLast (a₁ :: a₂ :: a₃ :: l) (by simp) = d)
-    (hPc : (a₁ :: a₂ :: a₃ :: l).Chain' (· ≠ ·))
+    (hPc : (a₁ :: a₂ :: a₃ :: l).IsChain (· ≠ ·))
     (c₁1 : simpleEdges.Adj a₁ a₂)
     (c₁2 : ¬simpleEdges.Adj a₂ a₃) :
     False := by
@@ -469,9 +469,9 @@ lemma case2 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
   have ha₃b₂₃ : a₃ ≠ b₂₃ := hb₂₃.ne23.symm
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
-  have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [ne_eq, List.chain'_cons_cons] at hPc
-    simp only [P', List.chain'_cons_cons, and_true, not_false_eq_true, ne_eq, ha₃b₂₃.symm, hPc.2.2,
+  have hP'₃ : P'.IsChain (· ≠ ·) := by
+    simp only [ne_eq, List.isChain_cons_cons] at hPc
+    simp only [P', List.isChain_cons_cons, and_true, not_false_eq_true, ne_eq, ha₃b₂₃.symm, hPc.2.2,
       hP'₁.1]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
@@ -493,7 +493,7 @@ lemma case3 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
     (hPmin : ∀ P' : List V, P'.Special a b d → (a₁ :: a₂ :: a₃ :: l).pathLength ≤ P'.pathLength)
     (ha₁ : a₁ = a) (hα : NotCollinear a₁ a₂ a₃)
     (hPd : List.getLast (a₁ :: a₂ :: a₃ :: l) (by simp) = d)
-    (hPc : (a₁ :: a₂ :: a₃ :: l).Chain' (· ≠ ·))
+    (hPc : (a₁ :: a₂ :: a₃ :: l).IsChain (· ≠ ·))
     (c₁1 : ¬simpleEdges.Adj a₁ a₂)
     (c₁2 : simpleEdges.Adj a₂ a₃) :
     False := by
@@ -523,9 +523,9 @@ lemma case3 {a b c d a₁ a₂ a₃ : V} {l : List V} (habc : IsSimpleTriangle a
     simp [right_extend_mem_Line hb₁₂]
   have hP'₂ : P'.pathLength ≤ (a₁ :: b :: d :: []).pathLength :=
     ha₁ ▸ hP'lt.le.trans (hPmin _ (abd_special habc hacd hbd' hbd))
-  have hP'₃ : P'.Chain' (· ≠ ·) := by
-    simp only [ne_eq, List.chain'_cons_cons] at hPc
-    simp only [P', List.chain'_cons_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq,
+  have hP'₃ : P'.IsChain (· ≠ ·) := by
+    simp only [ne_eq, List.isChain_cons_cons] at hPc
+    simp only [P', List.isChain_cons_cons, and_true, hb₁₂.ne12, not_false_eq_true, ne_eq,
       ha₃b₁₂.symm, hPc.2.2]
   simp only [List.Special, hP'₁, List.getLast_cons_cons, List.getLast_cons_cons, hPd,
     hP'₂, hP'₃, ← ha₁, and_true, true_and, not_or, not_not, P'] at hP'ns
