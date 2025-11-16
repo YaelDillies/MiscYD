@@ -37,7 +37,7 @@ lemma mem_affineSpan_image [Nontrivial k] :
       ∃ w : ι → k, ∑ i ∈ s, w i = 1 ∧ p₀ = s.affineCombination k p w where
   mp hp := by
     classical
-    rw [← Subtype.range_val (s := s.toSet), ← Set.range_comp] at hp
+    rw [← Subtype.range_val (α := ι) (s := s), ← Set.range_comp] at hp
     obtain ⟨w, hw, rfl⟩ := eq_affineCombination_of_mem_affineSpan_of_fintype hp
     refine ⟨fun i ↦ if hi : i ∈ s then w ⟨i, hi⟩ else 0, ?_, ?_⟩
     · simp [Finset.sum_dite]

@@ -58,7 +58,7 @@ lemma le_ecoveringNum_iff_forall_le_encard {n : ℕ∞} :
   simp [ecoveringNum]
 
 lemma le_ecoveringNum_iff_forall_le_card {n : ℕ∞} :
-    n ≤ ecoveringNum ε s ↔ ∀ ⦃N : Finset X⦄, N.toSet ⊆ s → IsNet ε s N → n ≤ #N  := by
+    n ≤ ecoveringNum ε s ↔ ∀ ⦃N : Finset X⦄, (N : Set X) ⊆ s → IsNet ε s N → n ≤ #N := by
   classical
   simp only [le_ecoveringNum_iff_forall_le_encard, Finset.forall, Set.Finite.coe_toFinset,
     ← Set.encard_coe_eq_coe_finsetCard]
@@ -141,7 +141,8 @@ lemma epackingNum_le_iff_forall_encard_le {n : ℕ∞} :
   simp [epackingNum]
 
 lemma epackingNum_le_iff_forall_card_le {n : ℕ∞} :
-    epackingNum ε s ≤ n ↔ ∀ ⦃P : Finset X⦄, P.toSet ⊆ s → IsSeparated ε P.toSet → #P ≤ n := by
+    epackingNum ε s ≤ n ↔
+      ∀ ⦃P : Finset X⦄, (P : Set X) ⊆ s → IsSeparated ε (P : Set X) → #P ≤ n := by
   classical
   simp only [epackingNum_le_iff_forall_encard_le, Finset.forall, Set.Finite.coe_toFinset,
     ← Set.encard_coe_eq_coe_finsetCard]

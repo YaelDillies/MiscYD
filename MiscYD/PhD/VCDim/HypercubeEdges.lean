@@ -114,14 +114,16 @@ noncomputable def restrictFiniteSymmDiffComponent (𝓒 : Finset (Set α)) :
   simp_rw [Set.image_preimage_eq_inter_range, Subtype.range_val, ← this,
     ← Set.inter_symmDiff_distrib_left, Set.inter_sdiff_left_comm _ (⋃ _, _)] at hAB
 
-protected lemma _root_.IsNIPWith.restrictFiniteSymmDiffComponent (h𝓒 : IsNIPWith d 𝓒.toSet) :
-    IsNIPWith d (restrictFiniteSymmDiffComponent 𝓒).toSet := sorry
-
-private lemma _root_.IsNIPWith.card_hypercubeEdgeFinset_le_of_finite [Finite α]
-    (h𝓕 : IsNIPWith d 𝓕.toSet) : #(hypercubeEdgeFinset 𝓕) ≤ d * #𝓕 := by
+protected lemma _root_.IsNIPWith.restrictFiniteSymmDiffComponent
+    (h𝓒 : IsNIPWith d (𝓒 : Set (Set α))) :
+    IsNIPWith d (restrictFiniteSymmDiffComponent 𝓒 : Set (Set ↑((⋃ A ∈ 𝓒, A) \ ⋂ A ∈ 𝓒, A))) :=
   sorry
 
-lemma IsNIPWith.card_hypercubeEdgeFinset_le (h𝓕 : IsNIPWith d 𝓕.toSet) :
+private lemma _root_.IsNIPWith.card_hypercubeEdgeFinset_le_of_finite [Finite α]
+    (h𝓕 : IsNIPWith d (𝓕 : Set (Set α))) : #(hypercubeEdgeFinset 𝓕) ≤ d * #𝓕 := by
+  sorry
+
+lemma IsNIPWith.card_hypercubeEdgeFinset_le (h𝓕 : IsNIPWith d (𝓕 : Set (Set α))) :
     #(hypercubeEdgeFinset 𝓕) ≤ d * #𝓕 := by
   classical
   calc

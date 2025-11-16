@@ -11,10 +11,10 @@ lemma mem_convexHull_image :
       ∃ w : ι → R, (∀ i ∈ s, 0 ≤ w i) ∧ ∑ i ∈ s, w i = 1 ∧ s.centerMass w f = x where
   mp hp := by
     classical
-    rw [← Subtype.range_val (s := s.toSet), ← Set.range_comp,
+    rw [← Subtype.range_val (α := ι) (s := s), ← Set.range_comp,
       convexHull_range_eq_exists_affineCombination] at hp
     obtain ⟨t, w, hw₀, hw₁, rfl⟩ := hp
-    refine ⟨fun i ↦ if hi : i ∈ Subtype.val '' (t : Set s.toSet) then w ⟨i, by aesop⟩ else 0,
+    refine ⟨fun i ↦ if hi : i ∈ Subtype.val '' (t : Set s) then w ⟨i, by aesop⟩ else 0,
       by aesop, ?_⟩
     · simp [Finset.sum_dite]
       sorry

@@ -31,7 +31,7 @@ section Group
 variable [Group α] [DecidableEq α] {s t : Finset α} {a : α}
 
 @[to_additive]
-instance (s : Finset α) : DecidablePred (· ∈ stabilizer α s.toSet) :=
+instance (s : Finset α) : DecidablePred (· ∈ stabilizer α (s : Set α)) :=
   fun a ↦ decidable_of_iff (a ∈ stabilizer α s) (by simp)
 
 /-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`.-/
@@ -55,7 +55,7 @@ lemma mulStab_subset_div_right (ha : a ∈ s) : s.mulStab ⊆ s / {a} := by
   exact smul_mem_smul_finset ha
 
 @[to_additive (attr := simp)]
-lemma coe_mulStab (hs : s.Nonempty) : (s.mulStab : Set α) = stabilizer α s.toSet := by
+lemma coe_mulStab (hs : s.Nonempty) : (s.mulStab : Set α) = stabilizer α (s : Set α) := by
   ext; simp [mem_mulStab hs]
 
 @[to_additive]
@@ -206,18 +206,18 @@ lemma mulStab_smul (a : α) (s : Finset α) : (a • s).mulStab = s.mulStab := b
 
 @[to_additive]
 lemma mulStab_image_coe_quotient (hs : s.Nonempty) :
-    (s.image (↑) : Finset (α ⧸ stabilizer α s.toSet)).mulStab = 1 := by
+    (s.image (↑) : Finset (α ⧸ stabilizer α (s : Set α))).mulStab = 1 := by
   simp_rw [← coe_inj, coe_mulStab (hs.image _), coe_image, coe_one]
   rw [stabilizer_image_coe_quotient, Subgroup.coe_bot, Set.singleton_one]
 
 @[to_additive]
 lemma preimage_image_quotientMk_stabilizer_eq_mul_mulStab (ht : t.Nonempty) (s : Finset α) :
-    QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α t.toSet) = s * t.mulStab := by
+    QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α (t : Set α)) = s * t.mulStab := by
   rw [QuotientGroup.preimage_image_mk_eq_mul, coe_mulStab ht, stabilizer_coe_finset]
 
 @[to_additive]
 lemma preimage_image_quotientMk_mulStabilizer (s : Finset α) :
-    QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α s.toSet) = s := by
+    QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α (s : Set α)) = s := by
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp
   · rw [preimage_image_quotientMk_stabilizer_eq_mul_mulStab hs s, ← coe_mul, mul_mulStab]
@@ -285,12 +285,13 @@ lemma card_mulStab_dvd_card_mulStab (hs : s.Nonempty) (h : s.mulStab ⊆ t.mulSt
 
 /-- A version of Lagrange's theorem. -/
 @[to_additive /-- A version of Lagrange's theorem. -/]
-lemma card_mulStab_mul_card_image_coe' (s t : Finset α) [DecidableEq (α ⧸ stabilizer α t.toSet)] :
-    #t.mulStab * #(s +ₛ stabilizer α t.toSet) = #(s * t.mulStab) := by
+lemma card_mulStab_mul_card_image_coe' (s t : Finset α)
+    [DecidableEq (α ⧸ stabilizer α (t : Set α))] :
+    #t.mulStab * #(s +ₛ stabilizer α (t : Set α)) = #(s * t.mulStab) := by
   obtain rfl | ht := t.eq_empty_or_nonempty
   · simp
-  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ (s +ˢ stabilizer α t.toSet)
-  have that : ↥(stabilizer α t.toSet) = ↥t.mulStab := by
+  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ (s +ˢ stabilizer α (t : Set α))
+  have that : ↥(stabilizer α (t : Set α)) = ↥t.mulStab := by
     rw [← SetLike.coe_sort_coe, ← coe_mulStab ht, Finset.coe_sort_coe]
   have temp := this.trans ((Equiv.cast that).prodCongr (Equiv.refl _))
   rw [preimage_image_quotientMk_stabilizer_eq_mul_mulStab ht] at temp
@@ -300,13 +301,14 @@ lemma card_mulStab_mul_card_image_coe' (s t : Finset α) [DecidableEq (α ⧸ st
 
 @[to_additive]
 lemma card_mul_card_eq_mulStab_card_mul_coe (s t : Finset α) :
-    #(s * t) = #(s * t).mulStab * #((s * t) +ₛ stabilizer α (s * t).toSet) := by
+    #(s * t) = #(s * t).mulStab * #((s * t) +ₛ stabilizer α (↑(s * t) : Set α)) := by
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp
   obtain rfl | ht := t.eq_empty_or_nonempty
   · simp
-  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ <| ↑(s * t) +ˢ stabilizer α (s * t).toSet
-  have that : ↥(stabilizer α (s * t).toSet) = ↥(s * t).mulStab := by
+  have := QuotientGroup.preimageMkEquivSubgroupProdSet _ <|
+    ↑(s * t) +ˢ stabilizer α (↑(s * t) : Set α)
+  have that : ↥(stabilizer α (↑(s * t) : Set α)) = ↥(s * t).mulStab := by
     rw [← SetLike.coe_sort_coe, ← coe_mulStab (hs.mul ht), Finset.coe_sort_coe]
   have temp := this.trans <| (Equiv.cast that).prodCongr (Equiv.refl _)
   rw [preimage_image_quotientMk_mulStabilizer] at temp
@@ -315,34 +317,36 @@ lemma card_mul_card_eq_mulStab_card_mul_coe (s t : Finset α) :
 /-- A version of Lagrange's theorem. -/
 @[to_additive /-- A version of Lagrange's theorem. -/]
 lemma card_mulStab_mul_card_image_coe (s t : Finset α) :
-    #(s * t).mulStab * #((s +ₛ stabilizer α (s * t).toSet) * (t +ₛ stabilizer α (s * t).toSet)) =
-      #(s * t) := by
+    #(s * t).mulStab *
+      #((s +ₛ stabilizer α (↑(s * t) : Set α)) * (t +ₛ stabilizer α (↑(s * t) : Set α))) =
+        #(s * t) := by
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp
   obtain rfl | ht := t.eq_empty_or_nonempty
   · simp
-  let this := QuotientGroup.preimageMkEquivSubgroupProdSet (stabilizer α (s * t).toSet)
-    ((s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet))
+  let this := QuotientGroup.preimageMkEquivSubgroupProdSet (stabilizer α (↑(s * t) : Set α))
+    ((s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α)))
   have image_coe_mul :
-    ((s * t).toSet +ˢ stabilizer α (s * t).toSet) =
-      (s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet) := by
-    simpa [coe_mul] using Set.image_mul (QuotientGroup.mk' (stabilizer α (s * t).toSet))
+    ((↑(s * t) : Set α) +ˢ stabilizer α (↑(s * t) : Set α)) =
+      (s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α)) := by
+    simpa [coe_mul] using Set.image_mul (QuotientGroup.mk' (stabilizer α (↑(s * t) : Set α)))
   rw [← image_coe_mul, preimage_image_quotientMk_mulStabilizer, image_coe_mul] at this
   have that :
-    (stabilizer α (s * t).toSet ×
-      ↥((s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet))) =
+    (stabilizer α (↑(s * t) : Set α) ×
+      ↥((s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α)))) =
       ((s * t).mulStab ×
-        ↥((s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet))) := by
+        ↥((s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α)))) := by
     rw [← SetLike.coe_sort_coe, ← coe_mulStab (hs.mul ht), Finset.coe_sort_coe]
   let temp := this.trans (Equiv.cast that)
   replace temp := Fintype.card_congr temp
   simp only [Fintype.card_prod, Fintype.card_coe] at temp
   have h1 : Fintype.card ((s * t : Finset α) : Set α) = Fintype.card (s * t) := by congr
-  have h2 : (s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet) =
-    ↑((s +ₛ stabilizer α (s * t).toSet) * (t +ₛ stabilizer α (s * t).toSet)) := by simp
+  have h2 : (s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α)) =
+    ↑((s +ₛ stabilizer α (↑(s * t) : Set α)) * (t +ₛ stabilizer α (↑(s * t) : Set α))) := by simp
   have h3 :
-    Fintype.card ((s +ˢ stabilizer α (s * t).toSet) * (t +ˢ stabilizer α (s * t).toSet)) =
-      Fintype.card ((s +ₛ stabilizer α (s * t).toSet) * (t +ₛ stabilizer α (s * t).toSet)) := by
+    Fintype.card ((s +ˢ stabilizer α (↑(s * t) : Set α)) * (t +ˢ stabilizer α (↑(s * t) : Set α))) =
+      Fintype.card ((s +ₛ stabilizer α (↑(s * t) : Set α)) *
+        (t +ₛ stabilizer α (↑(s * t) : Set α))) := by
     simp_rw [h2]
     congr
   simp only [h1, h3, Fintype.card_coe] at temp

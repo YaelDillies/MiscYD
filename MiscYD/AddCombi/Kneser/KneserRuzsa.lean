@@ -26,7 +26,6 @@ if the inequality is strict, then we in fact have `|s + H| + |t + H| ≤ |s + t|
 -/
 
 open Function MulAction Subgroup
-
 open scoped Classical Pointwise
 
 variable {α : Type*} [CommGroup α] [DecidableEq α] {s t : Finset α}
@@ -59,7 +58,8 @@ lemma le_card_union_add_card_mulStab_union :
       constructor
       · simp only [mem_one, ← QuotientGroup.mk_one]
         intro hx
-        rw [← mulStab_quotient_commute_subgroup N s, ← mulStab_quotient_commute_subgroup N t] at hx
+        rw [← mulStab_quotient_commute_subgroup N s (by aesop),
+          ← mulStab_quotient_commute_subgroup N t (by aesop)] at hx
         simp only [mem_inter, mem_image] at hx
         obtain ⟨⟨y, hy, hyx⟩, ⟨z, hz, hzx⟩⟩ := hx
         obtain ⟨w, hwx⟩ := Quotient.exists_rep x
@@ -70,12 +70,11 @@ lemma le_card_union_add_card_mulStab_union :
         · convert hyx.1 using 1
           rw [mul_comm, mul_smul]
           congr
-          simp only [← inv_smul_eq_iff, inv_inv, ← (mem_mulStab hs), hy]
+          simp only [← inv_smul_eq_iff, inv_inv, ← mem_mulStab hs, hy]
         · convert hzx.2 using 1
           rw [mul_comm, mul_smul]
           congr
-          simp only [← inv_smul_eq_iff, inv_inv, ← (mem_mulStab ht), hz]
-        all_goals { aesop }
+          simp only [← inv_smul_eq_iff, inv_inv, ← mem_mulStab ht, hz]
       · simp (config := { contextual := true }) [*]
     specialize this (α := α ⧸ N) (s := s.image (↑)) (t := t.image (↑))
     simp only [image_nonempty, mulStab_nonempty, mul_nonempty, and_imp,

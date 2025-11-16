@@ -28,7 +28,7 @@ namespace SetFamily
 variable {α : Type*} [Fintype α] {𝓕 : Finset (Set α)} {k d : ℕ}
 
 /-- The **Haussler packing lemma** -/
-theorem haussler_packing (isNIPWith_𝓕 : IsNIPWith d 𝓕.toSet)
+theorem haussler_packing (isNIPWith_𝓕 : IsNIPWith d (𝓕 : Set (Set α)))
     (isSeparated_𝓕 : IsSeparated (k / card α)
       ((fun A : Set α ↦ (WithLp.equiv 1 _).symm A.indicator (1 : α → ℝ)) '' 𝓕))
     (hk : k ≤ card α) : #𝓕 ≤ exp 1 * (d + 1) * (2 * exp 1 * (card α + 1) / (k + 2 * d + 2)) :=

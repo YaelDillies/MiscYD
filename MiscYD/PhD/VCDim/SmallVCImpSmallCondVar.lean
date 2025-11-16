@@ -31,6 +31,6 @@ variable {Ω X : Type*} [MeasurableSpace Ω] {μ : Measure Ω} {A : Ω → Set X
 /-- If `A` is a random variable valued in a small VC dimension set family over a fintype `X`,
 `I ⊆ X` is finite and `x ∈ I`, then `x ∈ A`has small conditional variance conditioned on `y ∈ A`
 for each `y ∈ I \ {x}`. -/
-theorem small_condVar_of_isNIPWith (isNIPWith_𝓕 : IsNIPWith d 𝓕.toSet) (hA : ∀ᵐ ω ∂μ, A ω ∈ 𝓕) :
-    Var[fun ω ↦ (A ω).indicator 1 x ; μ | .generateFrom sorry] ≤ sorry :=
+theorem small_condVar_of_isNIPWith (isNIPWith_𝓕 : IsNIPWith d (𝓕 : Set (Set X)))
+    (hA : ∀ᵐ ω ∂μ, A ω ∈ 𝓕) : Var[fun ω ↦ (A ω).indicator 1 x ; μ | .generateFrom sorry] ≤ sorry :=
   sorry

@@ -56,7 +56,7 @@ section restrict
 def restrict (w : StdSimplex ι R) : StdSimplex w.support R where
   toFun i := w i
   support := univ
-  mem_support_toFun i := by simpa [-coe_mem] using i.2
+  mem_support_toFun i := by simpa [-SetLike.coe_mem] using i.2
   nonneg' i := w.nonneg i
   sum_toFinsupp_eq_one := by simp [Finsupp.sum, sum_attach]
 
