@@ -1,6 +1,6 @@
 # Miscellaneous formalisations in Lean
 
-[![.github/workflows/push_master.yml](https://github.com/YaelDillies/MiscYD/actions/workflows/push_master.yml/badge.svg)](https://github.com/YaelDillies/MiscYD/actions/workflows/push_master.yml)
+[![.github/workflows/push.yml](https://github.com/YaelDillies/MiscYD/actions/workflows/push.yml/badge.svg)](https://github.com/YaelDillies/MiscYD/actions/workflows/push.yml)
 [![Gitpod Ready-to-Code](https://img.shields.io/badge/Gitpod-ready--to--code-blue?logo=gitpod)](https://gitpod.io/#https://github.com/YaelDillies/MiscYD)
 
 This repository is a collection of ideas and (partially implemented) projects in Lean.
