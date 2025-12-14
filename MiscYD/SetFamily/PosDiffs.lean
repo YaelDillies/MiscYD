@@ -96,7 +96,7 @@ end posDiffs
 /-! ### Positive subtraction -/
 
 section posSub
-variable [Sub α] [Preorder α][DecidableRel (α := α) (· ≤ ·)] [DecidableEq α] {s t : Finset α}
+variable [Sub α] [Preorder α] [DecidableRel (α := α) (· ≤ ·)] [DecidableEq α] {s t : Finset α}
   {a : α}
 
 /-- The positive subtraction of finsets `s` and `t` is the set of `a - b` for `a ∈ s`, `b ∈ t`,

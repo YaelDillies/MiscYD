@@ -54,10 +54,8 @@ lemma HasSliceRankLE.add (h₁ : HasSliceRankLE m f₁) :
   | _, _, .zero => by simpa
   | _, _, .succ g h h₂ => by simpa [add_assoc] using (h₁.add h₂).succ g h
 
-variable [DecidableEq ι]
-
 /-- Any function has slice-rank bounded by the cardinality of its domain. -/
-lemma hasSliceRankLE_card [Fintype ι] [∀ i, Fintype (α i)] (f : (∀ i, α i) → R) :
+lemma hasSliceRankLE_card [DecidableEq ι] [Fintype ι] [∀ i, Fintype (α i)] (f : (∀ i, α i) → R) :
     HasSliceRankLE (Fintype.card (∀ i, α i)) f := by
   rw [hasSliceRankLE_iff_exists_sum]
   sorry
@@ -65,6 +63,7 @@ lemma hasSliceRankLE_card [Fintype ι] [∀ i, Fintype (α i)] (f : (∀ i, α i
 /-- Any function from a finite type has finite slice-rank. -/
 lemma exists_hasSliceRankLE [Finite ι] [∀ i, Finite (α i)] (f : (∀ i, α i) → R) :
     ∃ n, HasSliceRankLE n f := by
+  classical
   cases nonempty_fintype ι
   have _ i := Fintype.ofFinite (α i)
   exact ⟨_, hasSliceRankLE_card _⟩

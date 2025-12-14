@@ -53,7 +53,7 @@ lemma IsLinftyAP.mul_fun (hfbdd : ∀ x, ‖f x‖ ≤ C) (hgbdd : ∀ x, ‖g x
 
 variable (f) in
 /-- A function `f : ℝ → ℂ` is **uniformly almost periodic** if its set of `ε`, L∞-almost period is
-relatively dense for all `ε > 0`-/
+relatively dense for all `ε > 0`. -/
 def IsUnifAlmostPeriodic : Prop := ∀ ⦃ε⦄, 0 < ε → IsRelDense {t | IsLinftyAP ε t f}
 
 /-- Any uniformly almost periodic function is uniformly continuous. -/

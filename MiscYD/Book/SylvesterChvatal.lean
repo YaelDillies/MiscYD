@@ -280,14 +280,14 @@ lemma List.pathLength_cons_le (x : V) :
 lemma List.pathLength_triangle_left {v x : V} :
     {l : List V} → (v :: l).pathLength ≤ dist v x + (x :: l).pathLength
   | [] => le_add_of_nonneg_left dist_nonneg
-  | _ :: _ => (add_le_add_right (dist_triangle _ _ _) _).trans_eq (add_assoc _ _ _)
+  | _ :: _ => (add_le_add_left (dist_triangle _ _ _) _).trans_eq (add_assoc _ _ _)
 
 lemma List.Sublist.pathLength_sublist {l₁ l₂ : List V} :
     l₁.Sublist l₂ → l₁.pathLength ≤ l₂.pathLength
   | slnil => pathLength_nonneg _
   | cons x h => (pathLength_sublist h).trans (pathLength_cons_le x)
   | cons₂ _ slnil => le_rfl
-  | cons₂ x (cons₂ y h) => add_le_add_left (cons₂ y h).pathLength_sublist _
+  | cons₂ x (cons₂ y h) => add_le_add_right (cons₂ y h).pathLength_sublist _
   | cons₂ x (cons y h) => (cons₂ x h).pathLength_sublist.trans pathLength_triangle_left
 
 def List.Special (a b d : V) : List V → Prop

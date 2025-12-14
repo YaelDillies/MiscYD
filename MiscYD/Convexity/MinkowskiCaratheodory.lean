@@ -11,7 +11,7 @@ import Mathlib.Analysis.LocallyConvex.WithSeminorms
 -/
 
 open Set
-open scoped Affine BigOperators Classical
+open scoped Affine BigOperators
 
 --TODO: Generalise to LCTVS
 variable {E : Type*} [NormedAddCommGroup E] [NormedSpace ℝ E] [FiniteDimensional ℝ E] {x : E}

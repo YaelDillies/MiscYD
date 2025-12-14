@@ -26,10 +26,8 @@ if the inequality is strict, then we in fact have `|s + H| + |t + H| ≤ |s + t|
 * Matt DeVos, *A short proof of Kneser's addition theorem*
 -/
 
-set_option linter.haveLet 0
-
 open Function MulAction
-open scoped Classical Pointwise
+open scoped Pointwise
 
 variable {α : Type*} [CommGroup α] [DecidableEq α] {s s' t t' C : Finset α} {a b : α}
 
@@ -43,7 +41,6 @@ lemma mulStab_mul_ssubset_mulStab (hs₁ : (s ∩ a • C.mulStab).Nonempty)
     (s ∩ a • C.mulStab * (t ∩ b • C.mulStab)).mulStab ⊂ C.mulStab := by
   have hCne : C.Nonempty := by
     contrapose! hab
-    simp only [not_nonempty_iff_eq_empty] at hab
     simp only [hab, mulStab_empty, smul_finset_empty, empty_subset]
   obtain ⟨x, hx⟩ := hs₁
   obtain ⟨y, hy⟩ := ht₁
@@ -232,8 +229,7 @@ lemma inter_mul_sub_card_le {a : α} {s t C : Finset α} (has : a ∈ s)
             ((s ∩ a • C.mulStab ∪ t ∩ a • C.mulStab) *
               (s ∩ a • C.mulStab * (t ∩ a • C.mulStab)).mulStab)) := by
       rw [card_sdiff_of_subset, Int.ofNat_sub (card_le_card _), card_smul_finset]
-      · rw [union_mul, le_sub_iff_add_le]
-        refine le_trans (add_le_add_left (Int.ofNat_le.mpr <| card_union_le _ _) _) ?_
+      · grw [union_mul, le_sub_iff_add_le, card_union_le]
         norm_num
       all_goals
         apply subset_trans (mul_subset_mul_left hst)
@@ -314,7 +310,7 @@ theorem mul_kneser :
         card_mulStab_mul_card_image_coe'] at hineq
       convert hineq using 1
       exact add_comm _ _
-    refine le_of_le_of_eq (mul_le_mul_left' ?_ _) (card_mul_card_eq_mulStab_card_mul_coe s t).symm
+    refine le_of_le_of_eq (mul_le_mul_right ?_ _) (card_mul_card_eq_mulStab_card_mul_coe s t).symm
     have := ih _ ?_ (s.image (↑) : Finset (α ⧸ stabilizer α (↑(s * t) : Set α))) (t.image (↑)) rfl
     · classical
       simpa only [← image_coe_mul, mulStab_image_coe_quotient (hs.mul ht), mul_one,
@@ -354,7 +350,7 @@ theorem mul_kneser :
   set convergent : Set (Finset α) :=
     {C | C ⊆ s * t ∧ #(s ∩ t) + #((s ∪ t) * C.mulStab) ≤ #C + #C.mulStab}
   have convergent_nonempty : convergent.Nonempty := by
-    refine ⟨s ∩ t * (s ∪ t), inter_mul_union_subset, (add_le_add_right (card_le_card <|
+    refine ⟨s ∩ t * (s ∪ t), inter_mul_union_subset, (add_le_add_left (card_le_card <|
       subset_mul_left _ <| one_mem_mulStab.2 <| hst.mul <| hs.mono subset_union_left) _).trans <|
         ih (s ∩ t) (s ∪ t) ?_⟩
     exact add_lt_add_of_le_of_lt (card_le_card inter_mul_union_subset) (card_lt_card hsts)
@@ -371,7 +367,7 @@ theorem mul_kneser :
   -- `#s + #t - 1 = #(s ∩ t) + #(s ∪ t) - 1 = ≤ #C ≤ #(s * t)`
   obtain hCstab | hCstab := eq_singleton_or_nontrivial (one_mem_mulStab.2 hC)
   · simp only [hCstab, card_singleton, card_mul_singleton, card_inter_add_card_union] at hCcard
-    exact hCcard.trans (add_le_add_right (card_le_card hCst) _)
+    grw [hCcard, hCst]
   exfalso
   have : ¬s * t * H ⊆ s * t := by
     rw [mul_subset_left_iff (hs.mul ht), hstab, ← coe_subset, coe_one]
@@ -501,7 +497,6 @@ theorem mul_kneser :
       _ ≤ #H := by
         simpa only [sub_le_iff_le_add, ← Int.natCast_add, Int.ofNat_le, add_comm _ #C,
           add_comm _ #(s ∩ t)] using hCcard
-
   have aux3₂ : (#S : ℤ) + #T + #s₂ + #t₂ - #H₂ < #H :=
     calc
       (#S : ℤ) + #T + #s₂ + #t₂ - #H₂
@@ -519,11 +514,9 @@ theorem mul_kneser :
         simpa only [sub_le_iff_le_add, ← Int.natCast_add, Int.ofNat_le, add_comm _ #C,
           add_comm _ #(s ∩ t)] using hCcard
   have aux4₁ : #H ≤ #S + (#s₁ + #t₂) := by
-    rw [← card_smul_finset a H]
-    exact card_le_card_sdiff_add_card.trans (add_le_add_left (card_union_le _ _) _)
+    grw [← card_smul_finset a H, card_le_card_sdiff_add_card, card_union_le]
   have aux4₂ : #H ≤ #T + (#s₂ + #t₁) := by
-    rw [← card_smul_finset b H]
-    exact card_le_card_sdiff_add_card.trans (add_le_add_left (card_union_le _ _) _)
+    grw [← card_smul_finset b H, card_le_card_sdiff_add_card, card_union_le]
   linarith [aux2₁, aux2₂, aux3₁, aux3₂, aux4₁, aux4₂]
 
 /-- The strict version of **Kneser's multiplication theorem**. If the LHS of `Finset.mul_kneser`

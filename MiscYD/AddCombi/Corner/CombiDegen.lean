@@ -54,6 +54,7 @@ def u : Fin 3 → Fin 9 → ℤ :=
     ![1, 4, 1, 5, 2, 5, 5, 2, 5],
     ![4, 1, 4, 0, 1, 5, 5, 1, 0]]
 
+set_option linter.flexible false in
 def combiDegen : CombiDegen φ ψ where
   u := u
   sum_eq_zero := by simp [φ]; decide
@@ -138,6 +139,7 @@ def u : Fin 3 → Fin 16 → ℤ :=
     ![  0,   0,  1,  1,   0, 10,   3,  5,  1,  1,   1,  3,  1,  1,  1, -1],
     ![ 10,  10, -1,  1,  10, 10, -10, -6,  4,  5, -10, -7, 10,  7, -9, -8]]
 
+set_option linter.flexible false in
 def combiDegen : CombiDegen φ ψ where
   u i := u i ∘ index
   sum_eq_zero := by simp [φ]; decide

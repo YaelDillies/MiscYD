@@ -166,7 +166,7 @@ noncomputable def packingNum (ε : ℝ≥0) (s : Set X) : ℕ := (epackingNum ε
 lemma exists_isSeparated_encard_eq_packingNum (hs : epackingNum ε s ≠ ⊤) :
     ∃ (N : Set X) (_ : N ⊆ s) (_ : IsSeparated ε N), N.encard = epackingNum ε s := by
   have : Nonempty ((N : Set X) ×' (_ : N ⊆ s) ×' IsSeparated ε N) := ⟨⟨∅, by simp, by simp⟩⟩
-  simp [epackingNum, iSup_psigma'] at hs
+  simp only [epackingNum, iSup_psigma', ne_eq] at hs
   obtain ⟨⟨N, hNs, hN⟩, h⟩ := ENat.exists_eq_iSup_of_lt_top <| lt_top_iff_ne_top.2 hs
   exact ⟨N, hNs, hN, by simpa [iSup_psigma] using h⟩
 

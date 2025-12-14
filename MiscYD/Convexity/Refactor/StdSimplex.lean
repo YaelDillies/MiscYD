@@ -112,8 +112,10 @@ lemma mapDomain_comp (f : ι → κ) (g : κ → μ) (w : StdSimplex ι R) :
 
 lemma domCongr_eq_mapDomain (e : ι ≃ κ) (w : StdSimplex ι R) : domCongr e w = mapDomain e w := by
   ext j
-  simp [Finsupp.mapDomain, Finsupp.sum]
-  rw [sum_eq_single (e.symm j)] <;> simp
+  simp only [coe_toFinsupp, coe_domCongr_apply, toFinsupp_mapDomain, Finsupp.mapDomain, Finsupp.sum,
+    Finsupp.coe_finset_sum, sum_apply]
+  rw [sum_eq_single (e.symm j)] <;> simp only [Finsupp.mem_support_iff, coe_toFinsupp, ne_eq,
+    not_not, Equiv.apply_symm_apply, Finsupp.single_eq_same, imp_self]
   exact fun i _ hij ↦ Finsupp.single_eq_of_ne (e.eq_symm_apply.ne.1 hij).symm
 
 lemma mapDomain_domCongr (f : ι → κ) (e : ι ≃ μ) (w : StdSimplex ι R) :
@@ -143,7 +145,9 @@ def sigma (w : StdSimplex ι R) (w' : ∀ i, StdSimplex (κ i) S) : StdSimplex (
     domCongr (f.sigmaCongr g) (w.sigma w') = (domCongr f w).sigma
       fun i ↦ domCongr ((g (f.symm i)).trans (Equiv.cast (by simp))) (w' _) := by
   ext ⟨i', j'⟩
-  simp [Equiv.sigmaCongr, Equiv.sigmaCongrLeft, Equiv.sigmaCongrRight, cast]
+  simp only [Equiv.sigmaCongr, Equiv.sigmaCongrRight, Equiv.sigmaCongrLeft, coe_toFinsupp,
+    coe_domCongr_apply, Equiv.symm_trans_apply, Equiv.coe_fn_symm_mk, sigma_apply, toFinsupp_sigma,
+    Finsupp.coe_mk]
   congr!
   set i'' := f (f.symm i')
   have h : i'' = i' := f.apply_symm_apply _

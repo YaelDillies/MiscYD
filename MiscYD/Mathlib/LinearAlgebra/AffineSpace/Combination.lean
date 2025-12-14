@@ -9,8 +9,7 @@ lemma weightedVSub_mem_vectorSpan' (h : ∑ i ∈ s, w i = 0) (hp : ∀ i ∈ s,
   obtain rfl | ⟨i, hi⟩ := s.eq_empty_or_nonempty
   · simp
   rw [Finset.weightedVSub_eq_weightedVSubOfPoint_of_sum_eq_zero s w p h (p i)]
-  simp
-  exact sum_mem fun j hj ↦ Submodule.smul_mem _ _ <| vsub_mem_vectorSpan _ (hp _ hj) (hp _ hi)
+  simpa using sum_mem fun j hj ↦ Submodule.smul_mem _ _ <| vsub_mem_vectorSpan _ (hp _ hj) (hp _ hi)
 
 -- TODO: Replace
 lemma affineCombination_mem_affineSpan' [Nontrivial k] (h : ∑ i ∈ s, w i = 1)
@@ -40,7 +39,7 @@ lemma mem_affineSpan_image [Nontrivial k] :
     rw [← Subtype.range_val (α := ι) (s := s), ← Set.range_comp] at hp
     obtain ⟨w, hw, rfl⟩ := eq_affineCombination_of_mem_affineSpan_of_fintype hp
     refine ⟨fun i ↦ if hi : i ∈ s then w ⟨i, hi⟩ else 0, ?_, ?_⟩
-    · simp [Finset.sum_dite]
+    · simp only [Finset.sum_dite, Finset.univ_eq_attach, Finset.sum_const_zero, add_zero]
       convert hw using 1
       sorry
     · sorry

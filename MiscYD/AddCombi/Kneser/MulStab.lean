@@ -34,7 +34,7 @@ variable [Group α] [DecidableEq α] {s t : Finset α} {a : α}
 instance (s : Finset α) : DecidablePred (· ∈ stabilizer α (s : Set α)) :=
   fun a ↦ decidable_of_iff (a ∈ stabilizer α s) (by simp)
 
-/-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`.-/
+/-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`. -/
 @[to_additive /-- The stabilizer of `s` as a finset. As an exception, this sends `∅` to `∅`. -/]
 def mulStab (s : Finset α) : Finset α := {a ∈ s / s | a • s = s}
 
@@ -215,9 +215,11 @@ lemma preimage_image_quotientMk_stabilizer_eq_mul_mulStab (ht : t.Nonempty) (s :
     QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α (t : Set α)) = s * t.mulStab := by
   rw [QuotientGroup.preimage_image_mk_eq_mul, coe_mulStab ht, stabilizer_coe_finset]
 
+omit [DecidableEq α] in
 @[to_additive]
 lemma preimage_image_quotientMk_mulStabilizer (s : Finset α) :
     QuotientGroup.mk ⁻¹' (s +ˢ stabilizer α (s : Set α)) = s := by
+  classical
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp
   · rw [preimage_image_quotientMk_stabilizer_eq_mul_mulStab hs s, ← coe_mul, mul_mulStab]
@@ -274,11 +276,11 @@ lemma card_mulStab_dvd_card_mulStab (hs : s.Nonempty) (h : s.mulStab ⊆ t.mulSt
   letI : Fintype (stabilizer α s) := fintypeStabilizerOfMulStab hs
   letI : Fintype (stabilizer α t) := fintypeStabilizerOfMulStab ht
   convert Subgroup.card_dvd_of_le h using 1
-  · simp [-mem_stabilizer_iff]
+  · simp only [stabilizer_coe_finset, Nat.card_eq_fintype_card]
     change _ = #(s.mulStab.attach.map
     ⟨Subtype.map id fun _ ↦ (mem_mulStab hs).1, Subtype.map_injective _ injective_id⟩)
     simp
-  · simp [-mem_stabilizer_iff]
+  · simp only [stabilizer_coe_finset, Nat.card_eq_fintype_card]
     change _ = #(t.mulStab.attach.map
       ⟨Subtype.map id fun _ ↦ (mem_mulStab ht).1, Subtype.map_injective _ injective_id⟩)
     simp

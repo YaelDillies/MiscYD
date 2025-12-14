@@ -26,7 +26,7 @@ if the inequality is strict, then we in fact have `|s + H| + |t + H| ≤ |s + t|
 -/
 
 open Function MulAction Subgroup
-open scoped Classical Pointwise
+open scoped Pointwise
 
 variable {α : Type*} [CommGroup α] [DecidableEq α] {s t : Finset α}
 
@@ -38,6 +38,7 @@ namespace Finset
 @[to_additive]
 lemma le_card_union_add_card_mulStab_union :
     min (#s + #s.mulStab) (#t + #t.mulStab) ≤ #(s ∪ t) + #(s ∪ t).mulStab := by
+  classical
   obtain rfl | hs := s.eq_empty_or_nonempty
   · simp [-zero_le']
   -- TODO: `to_additive` chokes on `zero_le'`
@@ -210,6 +211,7 @@ lemma le_card_mul_add_card_mulStab_mul (hs : s.Nonempty) (ht : t.Nonempty) :
   -- * `|s_b| + |t_b| = |s| + |t|`
   -- Such sets exist because we can take `s_b = s, t_b = t`. So pick `s_b, t_b` such that `|t_b|` is
   -- minimal among such sets.
+  classical
   have (b : α) (hb : b ∈ t) :
       ∃ n s' t', b ∈ t' ∧ s ⊆ s' ∧ s' * t' ⊆ s * t ∧ #s' + #t' = #s + #t ∧ n = #t' :=
     ⟨_, s, t, hb, Subset.rfl, Subset.rfl, rfl, rfl⟩
